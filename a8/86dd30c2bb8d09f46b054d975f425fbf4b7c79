@@ -1,0 +1,151 @@
+system-monitor/test/metrics.test.ts
+  s_ac87241640308a::t_2118dc2821adcb 1-201
+system-monitor/src/metrics/gpu.ts
+  s_ac87241640308a::t_48c1c9730e24b1 284
+  s_ac87241640308a::t_751341165144a8 1-214,217-283,285-293
+  s_ac87241640308a::t_dd78c842bf8d93 215-216
+system-monitor/test/actions.test.ts
+  s_ac87241640308a::t_191f96c2384ead 43,111,153
+  s_ac87241640308a::t_a52f6ad635fd51 1-42,44-110,112-152,154-155
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/gpu/icon.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/disk/icon.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/ui/memory.html
+  s_ac87241640308a::t_dd9f2b5e06a079 1-70
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/ui/network.html
+  s_ac87241640308a::t_dd9f2b5e06a079 1-88
+system-monitor/src/actions/memory.ts
+  s_ac87241640308a::t_a378f7ca596a00 1-3,5-9,14-21
+  s_ac87241640308a::t_2c84dcd4721e87 4
+  s_ac87241640308a::t_14d2ef2a3566b2 10-13
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/network/icon.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/disk/key.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/src/views.ts
+  s_ac87241640308a::t_640f11bc840608 1-42,52-56,58-160,162-214,217-236,238-286
+  s_ac87241640308a::t_1b10d4a5fc3845 57,161,215-216,237
+  s_ac87241640308a::t_14d2ef2a3566b2 43-51
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/overview/key.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/README.md
+  s_ac87241640308a::t_b93dd07d83dad5 1-155
+.github/workflows/system-monitor.yml
+  s_ac87241640308a::t_ff8f185f3cfe6f 1-51
+system-monitor/src/render.ts
+  s_ac87241640308a::t_27437a00292c0e 1-107,109,111-113,115-118,120-134,137-170,173-214,216-217,220-304
+  s_ac87241640308a::t_8be056b180c832 108,110,114,119,135-136,171-172,215,218-219
+system-monitor/src/metrics/exec.ts
+  s_ac87241640308a::t_4d9a5272b41ef7 1-36
+system-monitor/src/plugin.ts
+  s_ac87241640308a::t_182d15b2d0cd70 1-29
+system-monitor/.vscode/launch.json
+  s_ac87241640308a::t_399f4ede85c1c7 1-16
+system-monitor/src/actions/disk.ts
+  s_ac87241640308a::t_14d2ef2a3566b2 4,10-13
+  s_ac87241640308a::t_1bce4eb9396e2f 39-40
+  s_ac87241640308a::t_a378f7ca596a00 1-3,5-9,14-38,41-43
+system-monitor/src/metrics/network.ts
+  s_ac87241640308a::t_d0dba3340bd3d5 1-19,21-121
+  s_ac87241640308a::t_dd78c842bf8d93 20
+system-monitor/src/actions/overview.ts
+  s_ac87241640308a::t_a378f7ca596a00 1-3,5-9,15-34
+  s_ac87241640308a::t_14d2ef2a3566b2 10-14
+  s_ac87241640308a::t_2c84dcd4721e87 4
+system-monitor/src/actions/gpu.ts
+  s_ac87241640308a::t_2c84dcd4721e87 4
+  s_ac87241640308a::t_a378f7ca596a00 1-3,5-9,14-21
+  s_ac87241640308a::t_14d2ef2a3566b2 10-13
+system-monitor/src/actions/network.ts
+  s_ac87241640308a::t_14d2ef2a3566b2 10-13
+  s_ac87241640308a::t_a378f7ca596a00 1-3,5-9,14-21
+  s_ac87241640308a::t_2c84dcd4721e87 4
+system-monitor/LICENSE
+  s_ac87241640308a::t_399f4ede85c1c7 1-21
+system-monitor/src/metrics/types.ts
+  s_ac87241640308a::t_8c395fed80e1c3 1-57
+system-monitor/rollup.config.mjs
+  s_ac87241640308a::t_399f4ede85c1c7 1-50
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/ui/disk.html
+  s_ac87241640308a::t_dd9f2b5e06a079 1-74
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/ui/gpu.html
+  s_ac87241640308a::t_dd9f2b5e06a079 1-70
+system-monitor/src/actions/monitor-action.ts
+  s_ac87241640308a::t_5eac00848a44f6 1-46,55-63,67,71-159
+  s_ac87241640308a::t_14d2ef2a3566b2 47-54,64-66,68-70
+system-monitor/.gitignore
+  s_ac87241640308a::t_399f4ede85c1c7 1-18
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/ui/cpu.html
+  s_ac87241640308a::t_dd9f2b5e06a079 1-70
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/gpu/key.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/memory/key.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/src/metrics/disk.ts
+  s_ac87241640308a::t_9cca288bc1ce98 1-148
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/en.json
+  s_ac87241640308a::t_4b1262f8fed18a 1-29
+system-monitor/package.json
+  s_ac87241640308a::t_399f4ede85c1c7 1-35
+system-monitor/src/metrics/memory.ts
+  s_ac87241640308a::t_9b5a3d82963aa0 1-44
+system-monitor/tsconfig.json
+  s_ac87241640308a::t_399f4ede85c1c7 1-18
+system-monitor/.vscode/settings.json
+  s_ac87241640308a::t_399f4ede85c1c7 1-13
+system-monitor/src/metrics/cpu.ts
+  s_ac87241640308a::t_583843f3351108 1-69
+system-monitor/src/actions/cpu.ts
+  s_ac87241640308a::t_a378f7ca596a00 1-3,5-9,14-21
+  s_ac87241640308a::t_14d2ef2a3566b2 10-13
+  s_ac87241640308a::t_2c84dcd4721e87 4
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/manifest.json
+  s_ac87241640308a::t_4b1262f8fed18a 1-182
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/ui/overview.html
+  s_ac87241640308a::t_dd9f2b5e06a079 1-59
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/cpu/key.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/memory/icon.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/network/key.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/cpu/icon.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/plugin/category-icon.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/src/monitor.ts
+  s_ac87241640308a::t_8a81622fc8d115 68,162-163,166-169,174,282,284-288
+  s_ac87241640308a::t_4afaca490a618d 266-267
+  s_ac87241640308a::t_86ece52bbb5955 1-67,69-161,164-165,170-173,175-265,268-281,283,289-333
+system-monitor/scripts/generate-images.ts
+  s_ac87241640308a::t_d739c60dbb5e5d 1-154,157-162
+  s_ac87241640308a::t_fb43a04bea9d1b 155-156
+system-monitor/test/views.test.ts
+  s_ac87241640308a::t_d32fe7dadba974 1-127
+system-monitor/test/monitor.test.ts
+  s_ac87241640308a::t_df4745c7f418ba 1-129
+system-monitor/com.benwyrosdick.system-monitor.sdPlugin/imgs/actions/overview/icon.svg
+  s_ac87241640308a::t_fb43a04bea9d1b 1
+system-monitor/test/render.test.ts
+  s_ac87241640308a::t_5a258b81e3954c 1-15,17-20,22-81
+  s_ac87241640308a::t_1bce4eb9396e2f 16,21
+system-monitor/package-lock.json
+  s_ac87241640308a::t_b18903ed40d200 1-3119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a886dd30c2bb8d09f46b054d975f425fbf4b7c79",
+  "prompts": {},
+  "sessions": {
+    "s_ac87241640308a": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1ea2b-bf80-748f-a9ce-aaa998e5f0c3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
