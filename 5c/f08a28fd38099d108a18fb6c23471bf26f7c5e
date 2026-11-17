@@ -1,0 +1,101 @@
+.github/workflows/tailscale.yml
+  s_9d8662540b5069::t_8959c5cae7d0d7 1-51
+tailscale/.gitignore
+  s_9d8662540b5069::t_b4d5a9b2b01339 1-18
+tailscale/.vscode/launch.json
+  s_9d8662540b5069::t_9f2c73199a40c0 1-16
+tailscale/.vscode/settings.json
+  s_9d8662540b5069::t_ead34b3ca10af2 1-13
+tailscale/LICENSE
+  s_9d8662540b5069::t_d051901ec81637 1-21
+tailscale/README.md
+  s_9d8662540b5069::t_70aeae71699b26 1-104
+tailscale/com.benwyrosdick.tailscale.sdPlugin/en.json
+  s_9d8662540b5069::t_aaa831a32b548e 1-34
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/connect/icon.svg
+  s_9d8662540b5069::t_33931b84482d00 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/connect/key.svg
+  s_9d8662540b5069::t_7a9b8227734115 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/disconnect/icon.svg
+  s_9d8662540b5069::t_727cb7d2698f52 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/disconnect/key.svg
+  s_9d8662540b5069::t_0f4134ba61b2f0 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/switch-account/icon.svg
+  s_9d8662540b5069::t_5dc3e214a66e5f 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/switch-account/key.svg
+  s_9d8662540b5069::t_cab80263c8fb69 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/toggle-connection/icon.svg
+  s_9d8662540b5069::t_e2ecc909731bc3 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/toggle-connection/key.svg
+  s_9d8662540b5069::t_303ca279f17993 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/toggle-exit-node/icon.svg
+  s_9d8662540b5069::t_863afa07f3c04a 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/toggle-exit-node/key.svg
+  s_9d8662540b5069::t_c49b745b7075cf 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/plugin/category-icon.svg
+  s_9d8662540b5069::t_dcf2c1746ff297 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/manifest.json
+  s_9d8662540b5069::t_98b45e645b0c7f 1-160
+tailscale/com.benwyrosdick.tailscale.sdPlugin/ui/switch-account.html
+  s_9d8662540b5069::t_770941fbbcdcd4 1-28
+tailscale/com.benwyrosdick.tailscale.sdPlugin/ui/toggle-exit-node.html
+  s_9d8662540b5069::t_920646bede203f 1-21
+tailscale/package-lock.json
+  s_9d8662540b5069::t_cb3f6a67ae12a1 1-3119
+tailscale/package.json
+  s_9d8662540b5069::t_ff3a9caf4ff71f 1-35
+tailscale/rollup.config.mjs
+  s_9d8662540b5069::t_83afd5929821b4 1-50
+tailscale/scripts/generate-images.ts
+  s_9d8662540b5069::t_47a614cddc8d9c 1-60
+tailscale/src/actions/connect.ts
+  s_9d8662540b5069::t_584a9aca222cb3 1-21
+tailscale/src/actions/disconnect.ts
+  s_9d8662540b5069::t_e68c8c9aa98993 1-21
+tailscale/src/actions/switch-account.ts
+  s_9d8662540b5069::t_d469fbaf42d2d5 1-123
+tailscale/src/actions/tailscale-action.ts
+  s_9d8662540b5069::t_beea9d2d8e255d 1-217
+tailscale/src/actions/toggle-connection.ts
+  s_9d8662540b5069::t_9a970196662896 1-33
+tailscale/src/actions/toggle-exit-node.ts
+  s_9d8662540b5069::t_186a7751cfcf70 1-122
+tailscale/src/plugin.ts
+  s_9d8662540b5069::t_0a9900662ba6d1 1-29
+tailscale/src/render.ts
+  s_9d8662540b5069::t_4a704e1833868c 1-129
+tailscale/src/tailscale/cli.ts
+  s_9d8662540b5069::t_937ca809735b5b 1-154
+tailscale/src/tailscale/status-store.ts
+  s_9d8662540b5069::t_aac4e50839fd9c 1-124
+tailscale/src/tailscale/status.ts
+  s_9d8662540b5069::t_0e800f1819daa0 1-129
+tailscale/test/actions.test.ts
+  s_9d8662540b5069::t_b3102e2e7b676a 1-114
+tailscale/test/cli.test.ts
+  s_9d8662540b5069::t_c4f5ffaa024779 1-92
+tailscale/test/render.test.ts
+  s_9d8662540b5069::t_0b578ede38d26f 1-52
+tailscale/test/status-store.test.ts
+  s_9d8662540b5069::t_38f760abd9733a 1-68
+tailscale/test/status.test.ts
+  s_9d8662540b5069::t_c158defc814930 1-133
+tailscale/tsconfig.json
+  s_9d8662540b5069::t_bd27b9fb77c4da 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5cf08a28fd38099d108a18fb6c23471bf26f7c5e",
+  "prompts": {},
+  "sessions": {
+    "s_9d8662540b5069": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1e69a-c277-723f-9c42-8de27ff99b51",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
