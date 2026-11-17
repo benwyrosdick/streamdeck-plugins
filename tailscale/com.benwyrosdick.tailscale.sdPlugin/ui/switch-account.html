@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>Switch Account Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+	</head>
+
+	<body>
+		<!--
+		Accounts are listed by the plugin (`tailscale switch --list`) via the "getProfiles" data source.
+		Each color is remembered for the account it was picked for, and shown on the key while that account is active.
+		-->
+		<sdpi-item label="Account A">
+			<sdpi-select setting="profileA" datasource="getProfiles" show-refresh placeholder="Choose an account" loading="Loading accounts…"></sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="Color A">
+			<sdpi-color setting="colorA" default="#3c3c3c"></sdpi-color>
+		</sdpi-item>
+
+		<sdpi-item label="Account B">
+			<sdpi-select setting="profileB" datasource="getProfiles" show-refresh placeholder="Choose an account" loading="Loading accounts…"></sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="Color B">
+			<sdpi-color setting="colorB" default="#3c3c3c"></sdpi-color>
+		</sdpi-item>
+	</body>
+</html>

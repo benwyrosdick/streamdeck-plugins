@@ -1,0 +1,160 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+	"Name": "Tailscale",
+	"Version": "1.0.0.0",
+	"Author": "Ben Wyrosdick",
+	"Actions": [
+		{
+			"Name": "Connect",
+			"UUID": "com.benwyrosdick.tailscale.connect",
+			"Icon": "imgs/actions/connect/icon",
+			"Tooltip": "Connects to Tailscale (tailscale up).",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Connect",
+					"Touch": "Connect"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/connect/key",
+					"TitleAlignment": "bottom",
+					"FontSize": 10
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Disconnect",
+			"UUID": "com.benwyrosdick.tailscale.disconnect",
+			"Icon": "imgs/actions/disconnect/icon",
+			"Tooltip": "Disconnects from Tailscale (tailscale down).",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Disconnect",
+					"Touch": "Disconnect"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/disconnect/key",
+					"TitleAlignment": "bottom",
+					"FontSize": 10
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Toggle Connection",
+			"UUID": "com.benwyrosdick.tailscale.toggle-connection",
+			"Icon": "imgs/actions/toggle-connection/icon",
+			"Tooltip": "Connects or disconnects Tailscale and shows the live connection state.",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Toggle connection",
+					"Touch": "Toggle connection"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/toggle-connection/key",
+					"TitleAlignment": "bottom",
+					"FontSize": 10
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Switch Account",
+			"UUID": "com.benwyrosdick.tailscale.switch-account",
+			"Icon": "imgs/actions/switch-account/icon",
+			"Tooltip": "Switches between two Tailscale accounts, colored by the active account.",
+			"PropertyInspectorPath": "ui/switch-account.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Switch account",
+					"Touch": "Switch account"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/switch-account/key",
+					"TitleAlignment": "bottom",
+					"FontSize": 10
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Toggle Exit Node",
+			"UUID": "com.benwyrosdick.tailscale.toggle-exit-node",
+			"Icon": "imgs/actions/toggle-exit-node/icon",
+			"Tooltip": "Turns an exit node on or off; the node is remembered per account.",
+			"PropertyInspectorPath": "ui/toggle-exit-node.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Toggle exit node",
+					"Touch": "Toggle exit node"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/toggle-exit-node/key",
+					"TitleAlignment": "bottom",
+					"FontSize": 10
+				}
+			],
+			"SupportedInMultiActions": true
+		}
+	],
+	"Category": "Tailscale",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Control Tailscale: connect, disconnect, switch accounts, and toggle exit nodes.",
+	"Icon": "imgs/plugin/marketplace",
+	"URL": "https://github.com/benwyrosdick/streamdeck-tailscale",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "7.1"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "24",
+		"Debug": "enabled"
+	},
+	"UUID": "com.benwyrosdick.tailscale"
+}

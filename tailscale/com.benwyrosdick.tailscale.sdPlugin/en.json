@@ -1,0 +1,34 @@
+{
+	"Name": "Tailscale",
+	"Description": "Control Tailscale: connect, disconnect, switch accounts, and toggle exit nodes.",
+	"Category": "Tailscale",
+	"com.benwyrosdick.tailscale.connect": {
+		"Name": "Connect",
+		"Tooltip": "Connects to Tailscale (tailscale up)."
+	},
+	"com.benwyrosdick.tailscale.disconnect": {
+		"Name": "Disconnect",
+		"Tooltip": "Disconnects from Tailscale (tailscale down)."
+	},
+	"com.benwyrosdick.tailscale.toggle-connection": {
+		"Name": "Toggle Connection",
+		"Tooltip": "Connects or disconnects Tailscale and shows the live connection state."
+	},
+	"com.benwyrosdick.tailscale.switch-account": {
+		"Name": "Switch Account",
+		"Tooltip": "Switches between two Tailscale accounts, colored by the active account."
+	},
+	"com.benwyrosdick.tailscale.toggle-exit-node": {
+		"Name": "Toggle Exit Node",
+		"Tooltip": "Turns an exit node on or off; the node is remembered per account."
+	},
+	"Localization": {
+		"SwitchAccount": {
+			"Unavailable": "Can't list accounts — is Tailscale running?"
+		},
+		"ToggleExitNode": {
+			"Auto": "Automatic (recommended)",
+			"AutoShort": "Auto"
+		}
+	}
+}
