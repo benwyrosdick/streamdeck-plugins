@@ -17,9 +17,24 @@ or release and double-click it; the Stream Deck app installs it.
 | --- | --- |
 | **Connect** | `tailscale up` |
 | **Disconnect** | `tailscale down` |
-| **Toggle Connection** | Toggles up/down and shows live status — green when connected, black when down, amber while connecting. |
+| **Toggle Connection** | Toggles up/down and shows live status — green when connected, black when down, amber while connecting. Optionally tied to one account (see below). |
 | **Switch Account** | Toggles between two configured profiles (`tailscale switch`). Pick *Account A* and *Account B* (and optionally a color for each) in the property inspector. |
 | **Toggle Exit Node** | Toggles a configured exit node on/off (`tailscale set --exit-node=…`). The node is remembered per account and falls back to automatic selection when unavailable. |
+
+### Toggle Connection per tailnet
+
+Toggle Connection has an optional **Account** setting:
+
+- **Last used account** (default) — toggles whichever account Tailscale is on.
+- **A specific account** — the key belongs to that account's tailnet. It's lit
+  only while that tailnet is connected; pressing it while that tailnet is
+  connected disconnects, and pressing it otherwise switches to that account
+  (`tailscale switch`) and connects. The key is labelled with its tailnet.
+
+Give each tailnet its own key and switching between them is a single press.
+After a switch, the plugin only runs `tailscale up` if the account was left
+disconnected; an account that was running when you last left it reconnects on
+its own.
 
 Every action works on keys and on Stream Deck + dials (press or tap the touch
 strip). A red badge means Tailscale couldn't be reached; a failed command shows

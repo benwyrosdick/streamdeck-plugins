@@ -58,7 +58,8 @@
 			"Name": "Toggle Connection",
 			"UUID": "com.benwyrosdick.tailscale.toggle-connection",
 			"Icon": "imgs/actions/toggle-connection/icon",
-			"Tooltip": "Connects or disconnects Tailscale and shows the live connection state.",
+			"Tooltip": "Connects or disconnects Tailscale and shows the live connection state. Pick an account to make the key switch to and toggle that tailnet.",
+			"PropertyInspectorPath": "ui/toggle-connection.html",
 			"Controllers": [
 				"Keypad",
 				"Encoder"

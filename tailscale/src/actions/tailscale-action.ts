@@ -14,7 +14,7 @@ import type { JsonObject, JsonValue } from "@elgato/utils";
 
 import { keyImage, type View } from "../render";
 import type { TailscaleCli } from "../tailscale/cli";
-import type { TailscaleStatus } from "../tailscale/status";
+import type { Profile, TailscaleStatus } from "../tailscale/status";
 import type { StatusStore } from "../tailscale/status-store";
 
 /** Services shared by every action. */
@@ -198,6 +198,29 @@ export abstract class TailscaleAction<T extends JsonObject = JsonObject> extends
 			streamDeck.logger.error("Failed to render key", error);
 		}
 	}
+}
+
+/**
+ * The accounts from `tailscale switch --list` as `getProfiles` datasource
+ * items, or a disabled hint when they can't be listed. `first` items (e.g. a
+ * "last used" choice) go ahead of the accounts.
+ */
+export async function profileItems(cli: Pick<TailscaleCli, "listProfiles">, first: DataSourceItem[] = []): Promise<DataSourceItem[]> {
+	const profiles = await cli.listProfiles();
+	if (!profiles) {
+		// The hint can't share a value with a real choice, or the picker would select it.
+		const value = first.length ? "unavailable" : "";
+		return [...first, { value, label: streamDeck.i18n.translate("SwitchAccount.Unavailable"), disabled: true }];
+	}
+	return [...first, ...profiles.map((p) => ({ value: p.id, label: p.account || p.tailnet || p.id }))];
+}
+
+/** Maps a profile id to its tailnet: the name `tailscale status` reports while that account is active. */
+export function tailnetLookup(profiles: Profile[] | undefined): (id: string | undefined) => string | undefined {
+	return (id) => {
+		const profile = profiles?.find((p) => p.id === id);
+		return profile ? profile.tailnet || profile.account || undefined : undefined;
+	};
 }
 
 /** Shorten a label so it fits on a key. */

@@ -94,19 +94,23 @@ export function iconShapes(icon: IconName, color: string): string {
 	}
 }
 
-/** The Tailscale-style 3×3 dot grid: hollow outer rows, filled middle row. */
+/** Opacity of the logo's faded dots, so they follow the icon color on any background. */
+const FADED_DOT_OPACITY = 0.25;
+
+/**
+ * The Tailscale logo: a 3×3 grid of dots with the middle row and the
+ * bottom-center dot solid (a "T") and the rest faded.
+ */
 function dotGrid(color: string): string {
 	const centers = [56.5, 128, 199.5];
 	const dots: string[] = [];
-	for (const cy of centers) {
-		for (const cx of centers) {
-			dots.push(
-				cy === 128
-					? `<circle cx="${cx}" cy="${cy}" r="22.5" fill="${color}"/>`
-					: `<circle cx="${cx}" cy="${cy}" r="19.5" fill="none" stroke="${color}" stroke-width="6"/>`,
-			);
-		}
-	}
+	centers.forEach((cy, row) => {
+		centers.forEach((cx, col) => {
+			const solid = row === 1 || (row === 2 && col === 1);
+			const opacity = solid ? "" : ` fill-opacity="${FADED_DOT_OPACITY}"`;
+			dots.push(`<circle cx="${cx}" cy="${cy}" r="24" fill="${color}"${opacity}/>`);
+		});
+	});
 	return dots.join("");
 }
 

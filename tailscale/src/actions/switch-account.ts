@@ -1,8 +1,8 @@
-import streamDeck, { type Action, action } from "@elgato/streamdeck";
+import { type Action, action } from "@elgato/streamdeck";
 
 import { normalizeHex, type View } from "../render";
-import { currentAccount, type Profile, type TailscaleStatus } from "../tailscale/status";
-import { type DataSourceItem, showAlert, TailscaleAction, truncate } from "./tailscale-action";
+import { currentAccount, type TailscaleStatus } from "../tailscale/status";
+import { type DataSourceItem, profileItems, showAlert, TailscaleAction, tailnetLookup, truncate } from "./tailscale-action";
 
 /**
  * Colors are stored per account (keyed by tailnet, which is what
@@ -103,21 +103,6 @@ export class SwitchAccount extends TailscaleAction<SwitchAccountSettings> {
 	}
 
 	protected override async dataSource(event: string): Promise<DataSourceItem[] | undefined> {
-		if (event !== "getProfiles") {
-			return undefined;
-		}
-		const profiles = await this.tailscale.cli.listProfiles();
-		if (!profiles) {
-			return [{ value: "", label: streamDeck.i18n.translate("SwitchAccount.Unavailable"), disabled: true }];
-		}
-		return profiles.map((p) => ({ value: p.id, label: p.account || p.tailnet || p.id }));
+		return event === "getProfiles" ? profileItems(this.tailscale.cli) : undefined;
 	}
-}
-
-/** Maps a profile id to its tailnet (the color key). */
-function tailnetLookup(profiles: Profile[] | undefined): (id: string | undefined) => string | undefined {
-	return (id) => {
-		const profile = profiles?.find((p) => p.id === id);
-		return profile ? profile.tailnet || profile.account || undefined : undefined;
-	};
 }

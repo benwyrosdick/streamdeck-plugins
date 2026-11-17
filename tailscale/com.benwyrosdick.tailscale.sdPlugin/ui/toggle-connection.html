@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>Toggle Connection Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+	</head>
+
+	<body>
+		<!--
+		Accounts are listed by the plugin (`tailscale switch --list`) via the "getProfiles" data source.
+		"Last used account" toggles whichever account Tailscale was last on. Picking an account ties the key to that tailnet:
+		it's lit only while that tailnet is connected, and pressing it switches to it first if needed.
+		-->
+		<sdpi-item label="Account">
+			<sdpi-select setting="profile" datasource="getProfiles" show-refresh default="" loading="Loading accounts…"></sdpi-select>
+		</sdpi-item>
+		<sdpi-item>
+			<p>Give each tailnet its own key to switch between them with one press.</p>
+		</sdpi-item>
+	</body>
+</html>

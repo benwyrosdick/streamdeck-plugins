@@ -12,7 +12,7 @@
 	},
 	"com.benwyrosdick.tailscale.toggle-connection": {
 		"Name": "Toggle Connection",
-		"Tooltip": "Connects or disconnects Tailscale and shows the live connection state."
+		"Tooltip": "Connects or disconnects Tailscale and shows the live connection state. Pick an account to make the key switch to and toggle that tailnet."
 	},
 	"com.benwyrosdick.tailscale.switch-account": {
 		"Name": "Switch Account",
@@ -25,6 +25,9 @@
 	"Localization": {
 		"SwitchAccount": {
 			"Unavailable": "Can't list accounts — is Tailscale running?"
+		},
+		"ToggleConnection": {
+			"LastUsed": "Last used account"
 		},
 		"ToggleExitNode": {
 			"Auto": "Automatic (recommended)",
