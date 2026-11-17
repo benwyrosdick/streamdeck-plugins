@@ -1,0 +1,58 @@
+tailscale/README.md
+  s_ac87241640308a::t_77a188224b9e0d 20,24-37
+  s_ac87241640308a::t_ecd5578c5cdc01 38
+tailscale/test/toggle-connection.test.ts
+  s_ac87241640308a::t_63d75744b1165b 1-164
+tailscale/com.benwyrosdick.tailscale.sdPlugin/en.json
+  s_ac87241640308a::t_a6071d6aed62d3 15,29-30
+  s_ac87241640308a::t_2a7e0caee618ba 31
+tailscale/src/actions/switch-account.ts
+  s_ac87241640308a::t_d1591aea910d8a 1,4-5,106
+tailscale/src/render.ts
+  s_ac87241640308a::t_c609758b24125c 97-103,107-113
+tailscale/src/actions/tailscale-action.ts
+  s_ac87241640308a::t_d1591aea910d8a 17,203-210,214-224
+  s_ac87241640308a::t_1e6b3297932907 211-213
+  s_ac87241640308a::t_9adca3c545aeb4 225
+tailscale/com.benwyrosdick.tailscale.sdPlugin/ui/toggle-connection.html
+  s_ac87241640308a::t_a6071d6aed62d3 1-22
+tailscale/com.benwyrosdick.tailscale.sdPlugin/manifest.json
+  s_ac87241640308a::t_a6071d6aed62d3 61-62
+tailscale/src/actions/toggle-connection.ts
+  s_ac87241640308a::t_1e6b3297932907 1,5,7-32,34-35,40,43-46,58-78,80-84,86-103,105-108,110-119,121-133
+  s_ac87241640308a::t_a6071d6aed62d3 41,79,85,104,109,120
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/connect/icon.svg
+  s_ac87241640308a::t_93bb6845dfaf41 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/connect/key.svg
+  s_ac87241640308a::t_b9777822c1d10b 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/disconnect/icon.svg
+  s_ac87241640308a::t_3617b0e5c94dd2 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/disconnect/key.svg
+  s_ac87241640308a::t_84a830d745bca2 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/switch-account/icon.svg
+  s_ac87241640308a::t_39511fbba09424 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/switch-account/key.svg
+  s_ac87241640308a::t_a4a8032db39a9b 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/toggle-connection/icon.svg
+  s_ac87241640308a::t_f550446b443208 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/actions/toggle-connection/key.svg
+  s_ac87241640308a::t_04dafde7843b69 1
+tailscale/com.benwyrosdick.tailscale.sdPlugin/imgs/plugin/category-icon.svg
+  s_ac87241640308a::t_672a6288fc3aff 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "439b6136f44fd8d307db8382fb09acd9efd6c898",
+  "prompts": {},
+  "sessions": {
+    "s_ac87241640308a": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1ea2b-bf80-748f-a9ce-aaa998e5f0c3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
