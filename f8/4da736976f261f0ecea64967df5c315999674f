@@ -1,0 +1,99 @@
+.github/workflows/github.yml
+  s_844aa7ff4c5cb5::t_627099f198bd04 1-51
+github/.gitignore
+  s_844aa7ff4c5cb5::t_47cd2a530b412c 1-18
+github/.vscode/launch.json
+  s_844aa7ff4c5cb5::t_72ca3500e4d0d2 1-16
+github/.vscode/settings.json
+  s_844aa7ff4c5cb5::t_d5f75df5d6e349 1-13
+github/LICENSE
+  s_844aa7ff4c5cb5::t_637e186b6a23e8 1-21
+github/README.md
+  s_844aa7ff4c5cb5::t_232b8a00414abe 1-164
+github/com.benwyrosdick.github.sdPlugin/en.json
+  s_844aa7ff4c5cb5::t_dd79f11fdfebe5 1-21
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/ci-status/icon.svg
+  s_844aa7ff4c5cb5::t_293ec2777f24c3 1
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/ci-status/key.svg
+  s_844aa7ff4c5cb5::t_e9b06a6c2ff0ef 1
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/issue-count/icon.svg
+  s_844aa7ff4c5cb5::t_a5fd01a0aa11f4 1
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/issue-count/key.svg
+  s_844aa7ff4c5cb5::t_23cd54b539892f 1
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/notification-count/icon.svg
+  s_844aa7ff4c5cb5::t_4dcf8c60a2fe83 1
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/notification-count/key.svg
+  s_844aa7ff4c5cb5::t_ef37c0cc83bab1 1
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/pr-count/icon.svg
+  s_844aa7ff4c5cb5::t_c733f130def853 1
+github/com.benwyrosdick.github.sdPlugin/imgs/actions/pr-count/key.svg
+  s_844aa7ff4c5cb5::t_0628d3779c7db6 1
+github/com.benwyrosdick.github.sdPlugin/imgs/plugin/category-icon.svg
+  s_844aa7ff4c5cb5::t_b5029b324fbe78 1
+github/com.benwyrosdick.github.sdPlugin/manifest.json
+  s_844aa7ff4c5cb5::t_ef366cdf5e65c1 1-132
+github/com.benwyrosdick.github.sdPlugin/ui/ci-status.html
+  s_844aa7ff4c5cb5::t_3ef74635314724 1-29
+github/com.benwyrosdick.github.sdPlugin/ui/issue-count.html
+  s_844aa7ff4c5cb5::t_dbb9a6cfb6f611 1-61
+github/com.benwyrosdick.github.sdPlugin/ui/notification-count.html
+  s_844aa7ff4c5cb5::t_1cfedfe53c9d9e 1-32
+github/com.benwyrosdick.github.sdPlugin/ui/pr-count.html
+  s_844aa7ff4c5cb5::t_e2bbcb5639fa90 1-63
+github/package-lock.json
+  s_844aa7ff4c5cb5::t_0df36d3fefd74e 1-3119
+github/package.json
+  s_844aa7ff4c5cb5::t_acc59b2fb5c570 1-35
+github/rollup.config.mjs
+  s_844aa7ff4c5cb5::t_24635b90639466 1-50
+github/scripts/generate-images.ts
+  s_844aa7ff4c5cb5::t_a3e2428c8bf79d 1-69
+github/src/actions/ci-status.ts
+  s_844aa7ff4c5cb5::t_6ecf41bb4f6527 1-101
+github/src/actions/github-action.ts
+  s_844aa7ff4c5cb5::t_66af04e3946efd 1-151
+github/src/actions/issue-count.ts
+  s_844aa7ff4c5cb5::t_738f5a38db842d 1-40
+github/src/actions/notification-count.ts
+  s_844aa7ff4c5cb5::t_468c8729602e6c 1-41
+github/src/actions/pr-count.ts
+  s_844aa7ff4c5cb5::t_75ebc4495733a1 1-40
+github/src/github/cli.ts
+  s_844aa7ff4c5cb5::t_25859b361362e6 1-301
+github/src/github/queries.ts
+  s_844aa7ff4c5cb5::t_8759c5c4bc28aa 1-207
+github/src/github/store.ts
+  s_844aa7ff4c5cb5::t_47813b6bc2c6ec 1-205
+github/src/plugin.ts
+  s_844aa7ff4c5cb5::t_89f8a7e7b67c7c 1-32
+github/src/render.ts
+  s_844aa7ff4c5cb5::t_1c949ba2300f96 1-186
+github/test/actions.test.ts
+  s_844aa7ff4c5cb5::t_cbda1aadac79e2 1-161
+github/test/cli.test.ts
+  s_844aa7ff4c5cb5::t_48fdda96f9f678 1-179
+github/test/queries.test.ts
+  s_844aa7ff4c5cb5::t_52e7bc424c27e2 1-90
+github/test/render.test.ts
+  s_844aa7ff4c5cb5::t_1a8efca6c840f7 1-53
+github/test/store.test.ts
+  s_844aa7ff4c5cb5::t_3924e736734500 1-98
+github/tsconfig.json
+  s_844aa7ff4c5cb5::t_eb6e86fd1c0b3c 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f84da736976f261f0ecea64967df5c315999674f",
+  "prompts": {},
+  "sessions": {
+    "s_844aa7ff4c5cb5": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1e6b9-a5da-707d-a2a5-750ec805f664",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
