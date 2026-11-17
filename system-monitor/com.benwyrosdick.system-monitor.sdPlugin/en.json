@@ -1,0 +1,29 @@
+{
+	"Name": "System Monitor",
+	"Description": "Live CPU, GPU, memory, disk and network gauges for your Stream Deck, in five styles with warning colors.",
+	"Category": "System Monitor",
+	"com.benwyrosdick.system-monitor.cpu": {
+		"Name": "CPU",
+		"Tooltip": "Live CPU utilization. Press to refresh."
+	},
+	"com.benwyrosdick.system-monitor.gpu": {
+		"Name": "GPU",
+		"Tooltip": "Live GPU utilization, temperature and memory. Press to refresh."
+	},
+	"com.benwyrosdick.system-monitor.memory": {
+		"Name": "Memory",
+		"Tooltip": "Live memory usage. Press to refresh."
+	},
+	"com.benwyrosdick.system-monitor.disk": {
+		"Name": "Disk",
+		"Tooltip": "How full a drive is. Press to cycle through drives."
+	},
+	"com.benwyrosdick.system-monitor.network": {
+		"Name": "Network",
+		"Tooltip": "Live download or upload rate. Press to switch direction."
+	},
+	"com.benwyrosdick.system-monitor.overview": {
+		"Name": "Overview",
+		"Tooltip": "Several metrics stacked on one key. Press to refresh."
+	}
+}

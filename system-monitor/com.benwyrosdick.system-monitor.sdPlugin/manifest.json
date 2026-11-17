@@ -1,0 +1,182 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+	"Name": "System Monitor",
+	"Version": "1.0.0.0",
+	"Author": "Ben Wyrosdick",
+	"Actions": [
+		{
+			"Name": "CPU",
+			"UUID": "com.benwyrosdick.system-monitor.cpu",
+			"Icon": "imgs/actions/cpu/icon",
+			"Tooltip": "Live CPU utilization. Press to refresh.",
+			"PropertyInspectorPath": "ui/cpu.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Refresh",
+					"Touch": "Refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/cpu/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "GPU",
+			"UUID": "com.benwyrosdick.system-monitor.gpu",
+			"Icon": "imgs/actions/gpu/icon",
+			"Tooltip": "Live GPU utilization, temperature and memory. Press to refresh.",
+			"PropertyInspectorPath": "ui/gpu.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Refresh",
+					"Touch": "Refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/gpu/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "Memory",
+			"UUID": "com.benwyrosdick.system-monitor.memory",
+			"Icon": "imgs/actions/memory/icon",
+			"Tooltip": "Live memory usage. Press to refresh.",
+			"PropertyInspectorPath": "ui/memory.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Refresh",
+					"Touch": "Refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/memory/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "Disk",
+			"UUID": "com.benwyrosdick.system-monitor.disk",
+			"Icon": "imgs/actions/disk/icon",
+			"Tooltip": "How full a drive is. Press to cycle through drives.",
+			"PropertyInspectorPath": "ui/disk.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Next drive",
+					"Touch": "Next drive"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/disk/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "Network",
+			"UUID": "com.benwyrosdick.system-monitor.network",
+			"Icon": "imgs/actions/network/icon",
+			"Tooltip": "Live download or upload rate. Press to switch direction.",
+			"PropertyInspectorPath": "ui/network.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Switch direction",
+					"Touch": "Switch direction"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/network/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "Overview",
+			"UUID": "com.benwyrosdick.system-monitor.overview",
+			"Icon": "imgs/actions/overview/icon",
+			"Tooltip": "Several metrics stacked on one key. Press to refresh.",
+			"PropertyInspectorPath": "ui/overview.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Refresh",
+					"Touch": "Refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/overview/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		}
+	],
+	"Category": "System Monitor",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Live CPU, GPU, memory, disk and network gauges for your Stream Deck, in five styles with warning colors.",
+	"Icon": "imgs/plugin/marketplace",
+	"URL": "https://github.com/benwyrosdick/streamdeck-system-monitor",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "7.1"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "24"
+	},
+	"UUID": "com.benwyrosdick.system-monitor"
+}
