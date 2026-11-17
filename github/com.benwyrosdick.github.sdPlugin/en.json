@@ -1,0 +1,21 @@
+{
+	"Name": "GitHub Insights",
+	"Description": "Surface GitHub repo insights on your Stream Deck: live pull request, issue and notification counts, and CI status, powered by the local gh CLI.",
+	"Category": "GitHub Insights",
+	"com.benwyrosdick.github.pr-count": {
+		"Name": "PR Count",
+		"Tooltip": "Shows a live count of pull requests matching a filter. Press to open the search on GitHub."
+	},
+	"com.benwyrosdick.github.issue-count": {
+		"Name": "Issue Count",
+		"Tooltip": "Shows a live count of issues matching a filter. Press to open the search on GitHub."
+	},
+	"com.benwyrosdick.github.ci-status": {
+		"Name": "CI Status",
+		"Tooltip": "Shows the status of the latest GitHub Actions run. Press to open the run on GitHub."
+	},
+	"com.benwyrosdick.github.notification-count": {
+		"Name": "Notification Count",
+		"Tooltip": "Shows a live count of unread GitHub notifications. Press to open your inbox."
+	}
+}

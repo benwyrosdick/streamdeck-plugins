@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>Issue Count Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+	</head>
+
+	<body>
+		<!--
+		Every field maps onto a GitHub search qualifier; the plugin counts matches with one GraphQL search call.
+		Comma-separated labels match any of them (OR). The advanced query is appended verbatim.
+		-->
+		<sdpi-item label="Button label">
+			<sdpi-textfield setting="name" placeholder="Issues"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Repository">
+			<sdpi-textfield setting="repo" placeholder="owner/name"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Author">
+			<sdpi-select setting="author" default="any">
+				<option value="any">Anyone</option>
+				<option value="me">Me</option>
+				<option value="not_me">Not me</option>
+				<option value="user">Specific user</option>
+				<option value="not_user">Not a user</option>
+			</sdpi-select>
+		</sdpi-item>
+
+		<sdpi-item label="User">
+			<sdpi-textfield setting="user" placeholder="For Specific / Not a user"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Assignee">
+			<sdpi-select setting="assignee" default="any">
+				<option value="any">Anyone</option>
+				<option value="me">Me</option>
+				<option value="not_me">Not me</option>
+				<option value="none">Unassigned</option>
+			</sdpi-select>
+		</sdpi-item>
+
+		<sdpi-item label="Labels">
+			<sdpi-textfield setting="labels" placeholder="bug, help wanted"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="State">
+			<sdpi-select setting="state" default="open">
+				<option value="open">Open</option>
+				<option value="closed">Closed</option>
+				<option value="all">All</option>
+			</sdpi-select>
+		</sdpi-item>
+
+		<sdpi-item label="Advanced query">
+			<sdpi-textfield setting="extra" placeholder="milestone:v2"></sdpi-textfield>
+		</sdpi-item>
+	</body>
+</html>

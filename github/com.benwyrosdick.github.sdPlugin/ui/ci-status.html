@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>CI Status Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+	</head>
+
+	<body>
+		<!--
+		Shows the latest GitHub Actions run (`gh run list`) for the repo, optionally narrowed to a workflow and/or branch.
+		-->
+		<sdpi-item label="Button label">
+			<sdpi-textfield setting="name" placeholder="Workflow name"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Repository">
+			<sdpi-textfield setting="repo" placeholder="owner/name"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Workflow">
+			<sdpi-textfield setting="workflow" placeholder="Any (name or file, e.g. ci.yml)"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Branch">
+			<sdpi-textfield setting="branch" placeholder="Any branch"></sdpi-textfield>
+		</sdpi-item>
+	</body>
+</html>

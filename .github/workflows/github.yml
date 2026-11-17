@@ -1,0 +1,51 @@
+name: GitHub
+
+on:
+  push:
+    paths:
+      - "github/**"
+      - ".github/workflows/github.yml"
+  pull_request:
+    paths:
+      - "github/**"
+      - ".github/workflows/github.yml"
+
+defaults:
+  run:
+    working-directory: github
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: github/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate plugin
+        run: npm run validate
+
+      - name: Package plugin
+        run: npx streamdeck pack com.benwyrosdick.github.sdPlugin --output dist --force
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: com.benwyrosdick.github.streamDeckPlugin
+          path: github/dist/*.streamDeckPlugin

@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>Notification Count Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+	</head>
+
+	<body>
+		<!--
+		Counts unread notifications, like the inbox badge. The filters mirror the inbox's Filters sidebar.
+		-->
+		<sdpi-item label="Button label">
+			<sdpi-textfield setting="name" placeholder="Inbox"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Repository">
+			<sdpi-textfield setting="repo" placeholder="All repositories (or owner/name)"></sdpi-textfield>
+		</sdpi-item>
+
+		<sdpi-item label="Filter">
+			<sdpi-select setting="filter" default="all">
+				<option value="all">All unread</option>
+				<option value="assigned">Assigned</option>
+				<option value="participating">Participating</option>
+				<option value="mentioned">Mentioned</option>
+				<option value="team_mentioned">Team mentioned</option>
+				<option value="review_requested">Review requested</option>
+			</sdpi-select>
+		</sdpi-item>
+	</body>
+</html>

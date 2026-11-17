@@ -1,0 +1,132 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+	"Name": "GitHub Insights",
+	"Version": "1.0.0.0",
+	"Author": "Ben Wyrosdick",
+	"Actions": [
+		{
+			"Name": "PR Count",
+			"UUID": "com.benwyrosdick.github.pr-count",
+			"Icon": "imgs/actions/pr-count/icon",
+			"Tooltip": "Shows a live count of pull requests matching a filter. Press to open the search on GitHub.",
+			"PropertyInspectorPath": "ui/pr-count.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Open PR search",
+					"Touch": "Open PR search"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/pr-count/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Issue Count",
+			"UUID": "com.benwyrosdick.github.issue-count",
+			"Icon": "imgs/actions/issue-count/icon",
+			"Tooltip": "Shows a live count of issues matching a filter. Press to open the search on GitHub.",
+			"PropertyInspectorPath": "ui/issue-count.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Open issue search",
+					"Touch": "Open issue search"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/issue-count/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "CI Status",
+			"UUID": "com.benwyrosdick.github.ci-status",
+			"Icon": "imgs/actions/ci-status/icon",
+			"Tooltip": "Shows the status of the latest GitHub Actions run. Press to open the run on GitHub.",
+			"PropertyInspectorPath": "ui/ci-status.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Open run",
+					"Touch": "Open run"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/ci-status/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Notification Count",
+			"UUID": "com.benwyrosdick.github.notification-count",
+			"Icon": "imgs/actions/notification-count/icon",
+			"Tooltip": "Shows a live count of unread GitHub notifications. Press to open your inbox.",
+			"PropertyInspectorPath": "ui/notification-count.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Open inbox",
+					"Touch": "Open inbox"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/notification-count/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		}
+	],
+	"Category": "GitHub Insights",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Surface GitHub repo insights on your Stream Deck: live pull request, issue and notification counts, and CI status, powered by the local gh CLI.",
+	"Icon": "imgs/plugin/marketplace",
+	"URL": "https://github.com/benwyrosdick/streamdeck-github",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "7.1"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "24"
+	},
+	"UUID": "com.benwyrosdick.github"
+}
