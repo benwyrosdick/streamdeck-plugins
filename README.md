@@ -7,7 +7,7 @@ tests and CI job.
 
 | Plugin | What it does |
 | --- | --- |
-| [**Agent Usage**](agent-usage/) | Claude Code, Codex and GitHub Copilot plan limits (5-hour, weekly, monthly) with reset countdowns. |
+| [**Agent Usage**](agent-usage/) | Claude Code, Codex, GitHub Copilot and Grok plan limits (5-hour, weekly, monthly) with reset countdowns. |
 | [**GitHub Insights**](github/) | Live PR, issue and notification counts, and CI status for a repo, powered by the local `gh` CLI. |
 | [**System Monitor**](system-monitor/) | CPU, GPU, memory, disk and network gauges in five styles, turning amber and red past your thresholds. |
 | [**Tailscale**](tailscale/) | Connect and disconnect, switch accounts or tailnets, and toggle exit nodes. |

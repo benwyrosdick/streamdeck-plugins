@@ -67,3 +67,14 @@ export function toEpochMs(value: string | number | null | undefined): number | u
 
 /** Clamp a percentage into 0–100. */
 export const clampPercent = (value: number): number => Math.min(100, Math.max(0, value));
+
+/** A short name for a window from its length: 5h, Week, Month, 30d. */
+export function windowLabel(seconds: number | undefined, fallback: string): string {
+	if (!seconds) return fallback;
+	if (seconds === 604_800) return "Week";
+	// Calendar months run 28–31 days.
+	if (seconds >= 28 * 86_400 && seconds <= 31 * 86_400 && seconds % 86_400 === 0) return "Month";
+	if (seconds % 86_400 === 0) return `${seconds / 86_400}d`;
+	if (seconds % 3_600 === 0) return `${seconds / 3_600}h`;
+	return fallback;
+}

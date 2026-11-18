@@ -3,8 +3,9 @@
 ![Agent Usage](store/Thumbnail.png)
 
 Keep an eye on your coding agents' plan limits from your Stream Deck: Claude
-Code's 5-hour and weekly limits, Codex's 5-hour and weekly limits, and GitHub
-Copilot's monthly premium requests, each with a countdown to its reset and
+Code's 5-hour and weekly limits, Codex's 5-hour and weekly limits, GitHub
+Copilot's monthly premium requests, and Grok's weekly credits, each with a
+countdown to its reset and
 keys that turn amber and then red as you approach a limit. Built on the
 official
 [Stream Deck SDK](https://docs.elgato.com/streamdeck/sdk/introduction/getting-started)
@@ -25,6 +26,7 @@ run or release and double-click it; the Stream Deck app installs it.
 | **Claude Code** | 5-hour session, weekly (all models), weekly Opus, weekly Sonnet: whichever your plan has | Next window |
 | **Codex** | 5-hour session, weekly | Next window |
 | **GitHub Copilot** | Premium requests (monthly), chat (monthly; usually unlimited) | Next quota |
+| **Grok** | Included credits for the current period (weekly on SuperGrok) | Refresh |
 | **Overview** | Each chosen agent's most-used window, one row per agent | Refresh |
 
 Every action works on keys and on Stream Deck + dials (press or tap the touch
@@ -47,7 +49,7 @@ saves the choice, so the key keeps showing it.
 
 | Key | Meaning | Fix |
 | --- | --- | --- |
-| `Sign in` | No login found for the agent. | Sign in to the agent (`claude auth login`, `codex login`, `gh auth login`). |
+| `Sign in` | No login found for the agent. | Sign in to the agent (`claude auth login`, `codex login`, `gh auth login`, `grok login`). |
 | `Expired` | The login's access token has expired. | Run the agent; it renews its login as it runs. For Claude, see below. |
 | `N/A` | Signed in a way that has no plan usage (an API key), or the chosen window isn't on your plan. | Sign in with your subscription, or choose another window. |
 | `…` + `rate limited` | The usage endpoint asked the plugin to back off; it retries after 10 minutes. | — |
@@ -62,9 +64,10 @@ Once a key has a reading, it keeps showing it through network hiccups.
 | Claude Code | `GET api.anthropic.com/api/oauth/usage` | macOS Keychain item `Claude Code-credentials`, else `~/.claude/.credentials.json` (or `$CLAUDE_CONFIG_DIR`) |
 | Codex | `GET chatgpt.com/backend-api/wham/usage`, the endpoint Codex itself uses | `~/.codex/auth.json` (or `$CODEX_HOME`) |
 | GitHub Copilot | `GET api.github.com/copilot_internal/user` | `GH_TOKEN` / `GITHUB_TOKEN`, else `gh auth token` |
+| Grok | `GET cli-chat-proxy.grok.com/v1/billing?format=credits`, the endpoint the Grok CLI uses (plus `/v1/settings` for the plan name) | `~/.grok/auth.json` (or `$GROK_HOME`) |
 
 An agent is only polled while a key showing it is visible: every 2 minutes
-for Claude and Codex, and every 5 for Copilot (its quotas are monthly).
+for Claude, Codex and Grok, and every 5 for Copilot (its quotas are monthly).
 Pressing a key refreshes it straight away. Keys re-render every 15 seconds so
 reset countdowns stay current.
 
@@ -92,12 +95,22 @@ if something renews it.
 
 On macOS, the first read of the Keychain item may ask you to allow access.
 
+### Grok
+
+Grok's credits are a single pool for the current billing period, weekly on
+SuperGrok plans; the key's header shows the period (`Grok Week`). At the start
+of a period the billing API can leave the percentage out instead of sending
+zero; while the period is in progress the key reads that as 0%, as Grok's own
+web client does. `grok login` tokens last about a week and the Grok CLI renews
+them as it runs, so a key shows `Expired` only after a week or so without
+using Grok.
+
 ## Requirements
 
 - Stream Deck **7.1** or newer, on macOS 12+ or Windows 10+.
 - The agents you want to track, signed in with a subscription: Claude Code
-  (Pro/Max/Team), Codex (ChatGPT plan), and/or the GitHub CLI signed in to an
-  account with Copilot.
+  (Pro/Max/Team), Codex (ChatGPT plan), the GitHub CLI signed in to an
+  account with Copilot, and/or the Grok CLI signed in to SuperGrok.
 
 ## Development
 
@@ -134,7 +147,7 @@ com.benwyrosdick.agent-usage.sdPlugin/
 ## Disclaimer
 
 This is an unofficial plugin, not affiliated with or endorsed by Anthropic,
-OpenAI or GitHub. Claude, Codex and Copilot are trademarks of their owners and
+OpenAI, GitHub or xAI. Claude, Codex, Copilot and Grok are trademarks of their owners and
 are used here only to say what the plugin works with.
 
 ## License

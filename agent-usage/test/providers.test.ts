@@ -5,9 +5,10 @@ import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 
 import { CLIENT_ID, type ClaudeCredentials, ClaudeProvider, type CredentialVault, parseClaudeUsage, TOKEN_URL, USAGE_URL } from "../src/providers/claude";
-import { CodexProvider, parseCodexUsage, windowLabel } from "../src/providers/codex";
+import { CodexProvider, parseCodexUsage } from "../src/providers/codex";
 import { CopilotProvider, ghPaths, parseCopilotUsage } from "../src/providers/copilot";
-import type { Runner } from "../src/providers/http";
+import { BILLING_URL, GrokProvider, parseGrokBilling, pickLogin, SETTINGS_URL } from "../src/providers/grok";
+import { type Runner, windowLabel } from "../src/providers/http";
 import { ProviderError } from "../src/providers/types";
 
 const NOW = Date.parse("2026-11-18T12:00:00Z");
@@ -179,7 +180,8 @@ describe("Codex", () => {
 			{ id: "weekly", label: "Week", usedPercent: 5, resetsAt: 1_795_568_298_000 },
 		]);
 		expect(parseCodexUsage({ rate_limit: { primary_window: null } })).toEqual([]);
-		expect(windowLabel(2_592_000, "x")).toBe("30d");
+		expect(windowLabel(2_592_000, "x")).toBe("Month");
+		expect(windowLabel(90 * 86_400, "x")).toBe("90d");
 		expect(windowLabel(undefined, "5h")).toBe("5h");
 	});
 
@@ -254,5 +256,63 @@ describe("Copilot", () => {
 			"C:\\Program Files\\GitHub CLI\\gh.exe",
 			"C:\\Users\\me\\AppData\\Local\\Programs\\GitHub CLI\\gh.exe",
 		]);
+	});
+});
+
+// ---------------------------------------------------------------------- //
+// Grok
+// ---------------------------------------------------------------------- //
+
+describe("Grok", () => {
+	const period = { start: "2026-11-16T20:52:34Z", end: "2026-11-23T20:52:34Z" };
+	const end = Date.parse(period.end);
+	const billing = { config: { currentPeriod: period, creditUsagePercent: 12.5, billingPeriodEnd: period.end } };
+	const login = (expires_at: string) => ({ "https://auth.x.ai::client": { key: "grok-token", expires_at, email: "x" } });
+
+	it("reads the credits window, naming it from the period", () => {
+		expect(parseGrokBilling(billing, NOW)).toEqual([{ id: "credits", label: "Week", usedPercent: 12.5, resetsAt: end }]);
+		const monthly = { config: { billingPeriodStart: "2026-11-01T00:00:00Z", billingPeriodEnd: "2026-12-01T00:00:00Z", creditUsagePercent: 3 } };
+		expect(parseGrokBilling(monthly, NOW)[0].label).toBe("Month");
+	});
+
+	it("falls back to on-demand spend, and reads a missing percentage in an active period as zero", () => {
+		expect(parseGrokBilling({ config: { onDemandUsed: { val: 250 }, onDemandCap: { val: 1000 } } }, NOW)[0].usedPercent).toBe(25);
+		expect(parseGrokBilling({ config: { currentPeriod: period } }, NOW)[0].usedPercent).toBe(0);
+		// A period that has ended (or hasn't started) proves nothing.
+		expect(parseGrokBilling({ config: { currentPeriod: period } }, end + 1)).toEqual([]);
+		expect(parseGrokBilling({}, NOW)).toEqual([]);
+	});
+
+	it("prefers the SuperGrok login over a legacy session", () => {
+		expect(pickLogin({ "https://accounts.x.ai/sign-in": { key: "old" }, "https://auth.x.ai::abc": { key: "new" } })?.key).toBe("new");
+		expect(pickLogin({ "https://accounts.x.ai/sign-in": { key: "old" } })?.key).toBe("old");
+		expect(pickLogin({ "https://auth.x.ai::abc": { key: "" } })).toBeUndefined();
+	});
+
+	it("reads usage and the plan name with the CLI's login", async () => {
+		const fetchImpl = fakeFetch({
+			[BILLING_URL]: () => ({ body: billing }),
+			[SETTINGS_URL]: () => ({ body: { subscription_tier_display: "SuperGrok Heavy" } }),
+		});
+		const dir = home({ "auth.json": login("2026-11-18T15:00:00Z") });
+		const usage = await new GrokProvider({ env: { GROK_HOME: dir }, fetch: fetchImpl, now: () => NOW }).fetchUsage();
+		expect(usage).toEqual({ windows: [{ id: "credits", label: "Week", usedPercent: 12.5, resetsAt: end }], plan: "SuperGrok Heavy" });
+		expect(fetchImpl.mock.calls[0][1]?.headers).toMatchObject({ Authorization: "Bearer grok-token", "x-xai-token-auth": "xai-grok-cli" });
+	});
+
+	it("still reports usage when the plan lookup fails", async () => {
+		const fetchImpl = fakeFetch({ [BILLING_URL]: () => ({ body: billing }), [SETTINGS_URL]: () => ({ status: 500, body: {} }) });
+		const dir = home({ "auth.json": login("2026-11-18T15:00:00Z") });
+		const usage = await new GrokProvider({ env: { GROK_HOME: dir }, fetch: fetchImpl, now: () => NOW }).fetchUsage();
+		expect(usage.plan).toBeUndefined();
+		expect(usage.windows).toHaveLength(1);
+	});
+
+	it("reports signed out and expired logins without calling the API", async () => {
+		const fetchImpl = fakeFetch({});
+		expect(await kind(new GrokProvider({ env: { GROK_HOME: home({}) }, fetch: fetchImpl, now: () => NOW }).fetchUsage())).toBe("signedOut");
+		const expired = home({ "auth.json": login("2026-11-18T11:00:00Z") });
+		expect(await kind(new GrokProvider({ env: { GROK_HOME: expired }, fetch: fetchImpl, now: () => NOW }).fetchUsage())).toBe("expired");
+		expect(fetchImpl).not.toHaveBeenCalled();
 	});
 });

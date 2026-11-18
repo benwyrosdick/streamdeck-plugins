@@ -90,6 +90,12 @@ describe("agentView", () => {
 		expect(agentView("claude", claude, [], { label: "Work" }, NOW).title).toBe("Work 5h");
 	});
 
+	it("titles Grok's credits by their period", () => {
+		const grok: ProviderState = { snapshot: { windows: [{ id: "credits", label: "Week", usedPercent: 1, resetsAt: NOW + 45 * MIN }] } };
+		expect(agentView("grok", grok, [], { style: "classic" }, NOW)).toMatchObject({ title: "Grok Week", value: "1%", detail: "resets 45m" });
+		expect(agentView("grok", { error: new ProviderError("expired", "x") }, [], {}, NOW)).toMatchObject({ value: "Expired", detail: "run grok" });
+	});
+
 	it("titles Copilot's premium requests as just Copilot", () => {
 		const copilot: ProviderState = { snapshot: { windows: [{ id: "premium", label: "Premium", usedPercent: 35, remaining: 975 }] } };
 		expect(agentView("copilot", copilot, [], {}, NOW)).toMatchObject({ title: "Copilot", value: "35%", detail: "975 left" });
@@ -119,7 +125,7 @@ describe("overviewView", () => {
 	});
 
 	it("defaults to every agent", () => {
-		expect(overviewAgents({})).toEqual(["claude", "codex", "copilot"]);
+		expect(overviewAgents({})).toEqual(["claude", "codex", "copilot", "grok"]);
 		expect(overviewAgents({ agents: [] })).toEqual([]);
 	});
 });

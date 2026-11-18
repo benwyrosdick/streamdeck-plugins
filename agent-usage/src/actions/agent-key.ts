@@ -48,3 +48,8 @@ export class CodexUsage extends AgentKey {
 export class CopilotUsage extends AgentKey {
 	protected override readonly provider = "copilot";
 }
+
+@action({ UUID: "com.benwyrosdick.agent-usage.grok" })
+export class GrokUsage extends AgentKey {
+	protected override readonly provider = "grok";
+}

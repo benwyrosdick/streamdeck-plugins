@@ -1,7 +1,7 @@
 import os from "node:os";
 import path from "node:path";
 
-import { clampPercent, type Fetch, readJson, requestJson, toEpochMs } from "./http";
+import { clampPercent, type Fetch, readJson, requestJson, toEpochMs, windowLabel } from "./http";
 import { ProviderError, type UsageProvider, type UsageSnapshot, type UsageWindow } from "./types";
 
 export type CodexDeps = {
@@ -24,15 +24,6 @@ export type CodexUsageJson = {
 	plan_type?: string;
 	rate_limit?: { primary_window?: WindowJson; secondary_window?: WindowJson } | null;
 };
-
-/** A short name for a window from its length: 5h, Week, 30d. */
-export function windowLabel(seconds: number | undefined, fallback: string): string {
-	if (!seconds) return fallback;
-	if (seconds === 604_800) return "Week";
-	if (seconds % 86_400 === 0) return `${seconds / 86_400}d`;
-	if (seconds % 3_600 === 0) return `${seconds / 3_600}h`;
-	return fallback;
-}
 
 export function parseCodexUsage(json: CodexUsageJson): UsageWindow[] {
 	const window = (id: string, fallback: string, data: WindowJson | undefined): UsageWindow[] =>

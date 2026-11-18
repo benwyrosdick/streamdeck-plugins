@@ -31,6 +31,7 @@ export const AGENTS: Record<ProviderId, { name: string; /** What fixes a missing
 	claude: { name: "Claude", fix: "run Claude Code" },
 	codex: { name: "Codex", fix: "run codex" },
 	copilot: { name: "Copilot", fix: "gh auth login" },
+	grok: { name: "Grok", fix: "run grok" },
 };
 
 /** The windows each agent can have, for the inspector and for cycling on press. */
@@ -49,11 +50,12 @@ export const WINDOWS: Record<ProviderId, { id: string; name: string }[]> = {
 		{ id: "premium", name: "Premium requests (monthly)" },
 		{ id: "chat", name: "Chat (monthly)" },
 	],
+	grok: [{ id: "credits", name: "Credits (weekly)" }],
 };
 
 export const DEFAULT_WARN = 70;
 export const DEFAULT_CRIT = 90;
-export const DEFAULT_AGENTS: ProviderId[] = ["claude", "codex", "copilot"];
+export const DEFAULT_AGENTS: ProviderId[] = ["claude", "codex", "copilot", "grok"];
 
 /** Starting settings for an agent key; thresholds are strings to match the inspector's selects. */
 export const AGENT_DEFAULTS = {

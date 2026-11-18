@@ -4,7 +4,7 @@ import { ProviderError, type ProviderId, type UsageProvider, type UsageSnapshot 
 export const HISTORY_LENGTH = 40;
 
 /** How often each provider is polled while a key shows it. Copilot's quota is monthly. */
-export const POLL_MS: Record<ProviderId, number> = { claude: 120_000, codex: 120_000, copilot: 300_000 };
+export const POLL_MS: Record<ProviderId, number> = { claude: 120_000, codex: 120_000, copilot: 300_000, grok: 120_000 };
 
 /** After a 429, wait this long before asking again. */
 export const RATE_LIMIT_BACKOFF_MS = 600_000;

@@ -80,6 +80,31 @@
 			"SupportedInMultiActions": false
 		},
 		{
+			"Name": "Grok",
+			"UUID": "com.benwyrosdick.agent-usage.grok",
+			"Icon": "imgs/actions/grok/icon",
+			"Tooltip": "Grok plan usage: the included credits for the current (weekly) period. Press to refresh.",
+			"PropertyInspectorPath": "ui/grok.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Refresh",
+					"Touch": "Refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/grok/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
 			"Name": "Overview",
 			"UUID": "com.benwyrosdick.agent-usage.overview",
 			"Icon": "imgs/actions/overview/icon",
@@ -108,7 +133,7 @@
 	"Category": "Agent Usage",
 	"CategoryIcon": "imgs/plugin/category-icon",
 	"CodePath": "bin/plugin.js",
-	"Description": "Claude Code, Codex and GitHub Copilot plan usage on your Stream Deck: session, weekly and monthly limits with reset countdowns and warning colors.",
+	"Description": "Claude Code, Codex, GitHub Copilot and Grok plan usage on your Stream Deck: session, weekly and monthly limits with reset countdowns and warning colors.",
 	"Icon": "imgs/plugin/marketplace",
 	"URL": "https://github.com/benwyrosdick/streamdeck-plugins",
 	"SDKVersion": 3,
