@@ -3,11 +3,18 @@ import { ProviderError, type ProviderId, type UsageProvider, type UsageSnapshot 
 /** Points of history kept per window, for the graphs. */
 export const HISTORY_LENGTH = 40;
 
-/** How often each provider is polled while a key shows it. Copilot's quota is monthly. */
-export const POLL_MS: Record<ProviderId, number> = { claude: 120_000, codex: 120_000, copilot: 300_000, grok: 120_000 };
+/**
+ * How often each provider is polled while a key shows it. Anthropic's usage
+ * endpoint rate-limits readily, so Claude gets the same 5 minutes as
+ * Copilot (whose quota is monthly anyway).
+ */
+export const POLL_MS: Record<ProviderId, number> = { claude: 300_000, codex: 120_000, copilot: 300_000, grok: 120_000 };
 
-/** After a 429, wait this long before asking again. */
+/** After a 429 without a Retry-After, wait this long before asking again. */
 export const RATE_LIMIT_BACKOFF_MS = 600_000;
+
+/** Key presses refresh at most this often per provider. */
+export const MIN_REFRESH_GAP_MS = 30_000;
 
 /** A provider is polled while a key has asked for it within this window. */
 const DEMAND_WINDOW_MS = 60_000;
@@ -35,6 +42,9 @@ export class UsageStore {
 	readonly #states = new Map<ProviderId, ProviderState>();
 	readonly #demand = new Map<ProviderId, number>();
 	readonly #nextFetch = new Map<ProviderId, number>();
+	/** While rate limited, no request at all, not even for a key press. */
+	readonly #blockedUntil = new Map<ProviderId, number>();
+	readonly #lastAttempt = new Map<ProviderId, number>();
 	readonly #inFlight = new Map<ProviderId, Promise<void>>();
 	readonly #history = new Map<string, number[]>();
 	readonly #listeners = new Set<() => void>();
@@ -99,9 +109,18 @@ export class UsageStore {
 		this.#notify();
 	}
 
-	/** Fetch `id` now, regardless of schedule (a key press or first appearance). */
-	async refresh(id: ProviderId): Promise<void> {
-		await this.#fetch(id);
+	/**
+	 * Fetch `id` now, ahead of its schedule (a key press or first appearance).
+	 * Skipped while rate limited, and if the last attempt was under
+	 * {@link MIN_REFRESH_GAP_MS} ago unless `force` (a login setting changed).
+	 */
+	async refresh(id: ProviderId, { force = false } = {}): Promise<void> {
+		const now = this.#now();
+		const blocked = now < (this.#blockedUntil.get(id) ?? 0);
+		const recent = now - (this.#lastAttempt.get(id) ?? Number.NEGATIVE_INFINITY) < MIN_REFRESH_GAP_MS;
+		if (!blocked && (force || !recent)) {
+			await this.#fetch(id);
+		}
 		this.#notify();
 	}
 
@@ -121,6 +140,7 @@ export class UsageStore {
 			return;
 		}
 		const previous = this.#states.get(id) ?? {};
+		this.#lastAttempt.set(id, this.#now());
 		try {
 			const snapshot = await provider.fetchUsage();
 			const now = this.#now();
@@ -133,8 +153,16 @@ export class UsageStore {
 			}
 		} catch (cause) {
 			const error = cause instanceof ProviderError ? cause : new ProviderError("failed", String(cause));
+			const now = this.#now();
 			this.#states.set(id, { ...previous, error });
-			this.#nextFetch.set(id, this.#now() + (error.kind === "rateLimited" ? RATE_LIMIT_BACKOFF_MS : POLL_MS[id]));
+			if (error.kind === "rateLimited") {
+				// Honour the server's Retry-After, but never retry sooner than the normal interval.
+				const until = Math.max(error.retryAt ?? now + RATE_LIMIT_BACKOFF_MS, now + POLL_MS[id]);
+				this.#blockedUntil.set(id, until);
+				this.#nextFetch.set(id, until);
+			} else {
+				this.#nextFetch.set(id, now + POLL_MS[id]);
+			}
 		}
 	}
 

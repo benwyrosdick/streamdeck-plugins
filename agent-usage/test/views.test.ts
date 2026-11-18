@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { ProviderError } from "../src/providers/types";
 import type { ProviderState } from "../src/store";
-import { agentView, formatCountdown, levelFor, overviewAgents, overviewView, selectWindow, tightestWindow } from "../src/views";
+import { agentView, formatCountdown, levelFor, overviewAgents, overviewView, overviewWindow, selectWindow, tightestWindow } from "../src/views";
 
 const NOW = Date.parse("2026-11-18T12:00:00Z");
 const MIN = 60_000;
@@ -122,6 +122,40 @@ describe("overviewView", () => {
 			{ label: "Codex", value: "Expired", fraction: 0, level: "idle" },
 			{ label: "Copilot", value: "…", fraction: 0, level: "idle" },
 		]);
+	});
+
+	it("pins Claude and Codex rows to a chosen window, naming it", () => {
+		const codex: ProviderState = {
+			snapshot: {
+				windows: [
+					{ id: "session", label: "5h", usedPercent: 91 },
+					{ id: "weekly", label: "Week", usedPercent: 12 },
+				],
+			},
+		};
+		const view = overviewView({ claude, codex }, { agents: ["claude", "codex"], claudeWindow: "session", codexWindow: "weekly" });
+		expect(view.rows).toEqual([
+			{ label: "Claude 5h", value: "42%", fraction: 0.42, level: "normal" },
+			{ label: "Codex Wk", value: "12%", fraction: 0.12, level: "normal" },
+		]);
+		// "Most used" stays the default and keeps the plain name.
+		expect(overviewView({ codex }, { agents: ["codex"], codexWindow: "" }).rows[0]).toMatchObject({ label: "Codex", value: "91%", level: "critical" });
+	});
+
+	it("shows N/A when the pinned window isn't on the plan", () => {
+		const sessionOnly: ProviderState = { snapshot: { windows: [{ id: "session", label: "5h", usedPercent: 5 }] } };
+		expect(overviewView({ codex: sessionOnly }, { agents: ["codex"], codexWindow: "weekly" }).rows[0]).toEqual({
+			label: "Codex",
+			value: "N/A",
+			fraction: 0,
+			level: "normal",
+		});
+	});
+
+	it("ignores a pinned window for agents that can't pin one", () => {
+		const copilot: ProviderState = { snapshot: { windows: [{ id: "premium", label: "Premium", usedPercent: 35 }] } };
+		expect(overviewWindow("copilot", { claudeWindow: "session" })).toBeUndefined();
+		expect(overviewView({ copilot }, { agents: ["copilot"] }).rows[0].label).toBe("Copilot");
 	});
 
 	it("defaults to every agent", () => {

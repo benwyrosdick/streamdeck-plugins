@@ -179,6 +179,9 @@ function solid(view: GaugeView): string {
 	].join("");
 }
 
+/** Widest an Overview row's value may be; long words like "Expired" shrink rather than crowd out the label. */
+const ROW_VALUE_WIDTH = 60;
+
 function overview(view: OverviewView): string {
 	const rows = view.rows.slice(0, 5);
 	const parts = [rect("#10151f")];
@@ -195,8 +198,9 @@ function overview(view: OverviewView): string {
 		const barHeight = Math.max(3, Math.min(6, height * 0.14));
 		const accent = ACCENT[row.level];
 		parts.push(
-			text(row.label, 12, baseline, labelSize, MUTED, 700, "start", 52),
-			text(row.value, 132, baseline, labelSize + 1, accent, 700, "end", 76),
+			// The label gets whatever room the value leaves, so "Claude Wk" fits beside "42%".
+			text(row.label, 12, baseline, labelSize, MUTED, 700, "start", 120 - textWidth(row.value, fitSize(row.value, labelSize + 1, ROW_VALUE_WIDTH)) - 6),
+			text(row.value, 132, baseline, labelSize + 1, accent, 700, "end", ROW_VALUE_WIDTH),
 			`<rect x="12" y="${n(barY)}" width="120" height="${n(barHeight)}" rx="${n(barHeight / 2)}" fill="${TRACK}"/>`,
 			clamp01(row.fraction) > 0
 				? `<rect x="12" y="${n(barY)}" width="${n(Math.max(barHeight, 120 * clamp01(row.fraction)))}" height="${n(barHeight)}" rx="${n(barHeight / 2)}" fill="${accent}"/>`
@@ -284,8 +288,12 @@ function text(
 }
 
 export function fitSize(value: string, maxSize: number, maxWidth: number): number {
-	const width = [...value].reduce((sum, ch) => sum + glyphWidth(ch), 0) * GLYPH_WIDTH;
-	return Math.max(8, Math.min(maxSize, Math.floor(maxWidth / Math.max(width, 0.1))));
+	return Math.max(8, Math.min(maxSize, Math.floor(maxWidth / Math.max(textWidth(value, 1), 0.1))));
+}
+
+/** Estimated rendered width of `value` at font `size`. */
+export function textWidth(value: string, size: number): number {
+	return [...value].reduce((sum, ch) => sum + glyphWidth(ch), 0) * GLYPH_WIDTH * size;
 }
 
 /** Rough relative glyph widths so "1.1" and "MB/s" aren't sized like "WWW". */

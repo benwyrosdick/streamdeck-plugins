@@ -9,7 +9,7 @@ import { KeyAction } from "./key-action";
 export class Overview extends KeyAction<OverviewSettings> {
 	protected override defaults(): OverviewSettings {
 		const { colorize, warnAt, critAt } = AGENT_DEFAULTS;
-		return { agents: DEFAULT_AGENTS, colorize, warnAt, critAt };
+		return { agents: DEFAULT_AGENTS, claudeWindow: "", codexWindow: "", colorize, warnAt, critAt };
 	}
 
 	protected override view(settings: OverviewSettings): View {

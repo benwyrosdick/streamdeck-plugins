@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { ProviderError, type ProviderId, type UsageProvider, type UsageSnapshot } from "../src/providers/types";
-import { HISTORY_LENGTH, POLL_MS, RATE_LIMIT_BACKOFF_MS, UsageStore } from "../src/store";
+import { HISTORY_LENGTH, MIN_REFRESH_GAP_MS, POLL_MS, RATE_LIMIT_BACKOFF_MS, UsageStore } from "../src/store";
 
 const snapshot = (used: number): UsageSnapshot => ({ windows: [{ id: "session", label: "5h", usedPercent: used }] });
 
@@ -59,8 +59,9 @@ describe("UsageStore", () => {
 	it("keeps the last reading through a failure, alongside the error", async () => {
 		const failure = new ProviderError("failed", "offline");
 		const claude = fakeProvider("claude", [snapshot(10), failure]);
-		const { store } = setup([claude]);
+		const { store, advance } = setup([claude]);
 		await store.refresh("claude");
+		advance(MIN_REFRESH_GAP_MS);
 		await store.refresh("claude");
 		expect(store.state("claude")).toMatchObject({ snapshot: snapshot(10), error: failure });
 	});
@@ -80,6 +81,50 @@ describe("UsageStore", () => {
 		expect(claude.fetchUsage).toHaveBeenCalledTimes(2);
 	});
 
+	it("honours Retry-After, but never retries sooner than the normal interval", async () => {
+		const claude = fakeProvider("claude", [new ProviderError("rateLimited", "429", 3_600_000), snapshot(5)]);
+		const { store, advance } = setup([claude]);
+		await store.refresh("claude");
+		advance(3_600_000 - 1);
+		store.state("claude");
+		await store.tick();
+		expect(claude.fetchUsage).toHaveBeenCalledTimes(1);
+		advance(1);
+		await store.tick();
+		expect(claude.fetchUsage).toHaveBeenCalledTimes(2);
+
+		const soon = fakeProvider("codex", [new ProviderError("rateLimited", "429", 1_000), snapshot(5)]);
+		const other = setup([soon]);
+		await other.store.refresh("codex");
+		other.advance(POLL_MS.codex - 1);
+		other.store.state("codex");
+		await other.store.tick();
+		expect(soon.fetchUsage).toHaveBeenCalledTimes(1);
+	});
+
+	it("doesn't let key presses hammer the endpoint", async () => {
+		const claude = fakeProvider("claude", [snapshot(10)]);
+		const { store, advance } = setup([claude]);
+		await store.refresh("claude");
+		await store.refresh("claude");
+		advance(MIN_REFRESH_GAP_MS - 1);
+		await store.refresh("claude");
+		expect(claude.fetchUsage).toHaveBeenCalledTimes(1);
+		advance(1);
+		await store.refresh("claude");
+		expect(claude.fetchUsage).toHaveBeenCalledTimes(2);
+	});
+
+	it("lets a forced refresh skip the gap, but not a rate-limit backoff", async () => {
+		const claude = fakeProvider("claude", [snapshot(10), new ProviderError("rateLimited", "429"), snapshot(20)]);
+		const { store } = setup([claude]);
+		await store.refresh("claude");
+		await store.refresh("claude", { force: true });
+		expect(claude.fetchUsage).toHaveBeenCalledTimes(2);
+		await store.refresh("claude", { force: true });
+		expect(claude.fetchUsage).toHaveBeenCalledTimes(2);
+	});
+
 	it("shares one request between concurrent refreshes", async () => {
 		const claude = fakeProvider("claude", [snapshot(10)]);
 		const { store } = setup([claude]);
@@ -90,11 +135,12 @@ describe("UsageStore", () => {
 	it("records capped history per window and notifies listeners", async () => {
 		const values = Array.from({ length: HISTORY_LENGTH + 5 }, (_, i) => snapshot(i));
 		const claude = fakeProvider("claude", values);
-		const { store } = setup([claude]);
+		const { store, advance } = setup([claude]);
 		const listener = vi.fn();
 		store.subscribe(listener);
 		for (let i = 0; i < values.length; i++) {
 			await store.refresh("claude");
+			advance(MIN_REFRESH_GAP_MS);
 		}
 		expect(store.history("claude", "session")).toHaveLength(HISTORY_LENGTH);
 		expect(store.history("claude", "session").at(-1)).toBe(HISTORY_LENGTH + 4);

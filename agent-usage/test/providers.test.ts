@@ -8,7 +8,7 @@ import { CLIENT_ID, type ClaudeCredentials, ClaudeProvider, type CredentialVault
 import { CodexProvider, parseCodexUsage } from "../src/providers/codex";
 import { CopilotProvider, ghPaths, parseCopilotUsage } from "../src/providers/copilot";
 import { BILLING_URL, GrokProvider, parseGrokBilling, pickLogin, SETTINGS_URL } from "../src/providers/grok";
-import { type Runner, windowLabel } from "../src/providers/http";
+import { retryAt, type Runner, windowLabel } from "../src/providers/http";
 import { ProviderError } from "../src/providers/types";
 
 const NOW = Date.parse("2026-11-18T12:00:00Z");
@@ -155,9 +155,21 @@ describe("Claude", () => {
 		expect(await kind(claude(fileLogin({ expiresAt: NOW - HOUR }), memoryVault(true), fetchImpl).fetchUsage())).toBe("expired");
 	});
 
-	it("maps rate limiting", async () => {
+	it("maps rate limiting, keeping the server's Retry-After", async () => {
 		const fetchImpl = fakeFetch({ [USAGE_URL]: () => ({ status: 429, body: {} }) });
 		expect(await kind(claude(fileLogin(), memoryVault(false), fetchImpl).fetchUsage())).toBe("rateLimited");
+
+		const withRetry = vi.fn(async () => new Response("{}", { status: 429, headers: { "Retry-After": "120" } }));
+		const error = await claude(fileLogin(), memoryVault(false), withRetry).fetchUsage().catch((e: ProviderError) => e);
+		expect(error).toBeInstanceOf(ProviderError);
+		expect((error as ProviderError).retryAt).toBeGreaterThan(Date.now() + 110_000);
+	});
+
+	it("reads Retry-After as seconds or an HTTP date", () => {
+		expect(retryAt("90", 1_000)).toBe(91_000);
+		expect(retryAt("Wed, 18 Nov 2026 12:05:00 GMT")).toBe(Date.parse("2026-11-18T12:05:00Z"));
+		expect(retryAt(null)).toBeUndefined();
+		expect(retryAt("soon")).toBeUndefined();
 	});
 });
 

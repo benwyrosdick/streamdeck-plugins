@@ -27,7 +27,7 @@ run or release and double-click it; the Stream Deck app installs it.
 | **Codex** | 5-hour session, weekly | Next window |
 | **GitHub Copilot** | Premium requests (monthly), chat (monthly; usually unlimited) | Next quota |
 | **Grok** | Included credits for the current period (weekly on SuperGrok) | Refresh |
-| **Overview** | Each chosen agent's most-used window, one row per agent | Refresh |
+| **Overview** | One row per chosen agent: its most-used window, or for Claude and Codex a window you pick | Refresh |
 
 Every action works on keys and on Stream Deck + dials (press or tap the touch
 strip). Pressing an agent key steps through the windows your account has and
@@ -44,6 +44,7 @@ saves the choice, so the key keeps showing it.
 | **Label** | Replaces the agent name in the header (up to 10 characters). |
 | **Warning colors** | Amber at or above **Warning at** (default 70%), red at or above **Critical at** (default 90%). Always judged on percent used, even when showing percent left. |
 | **Agents** | Overview only: which agents get a row. |
+| **Claude window / Codex window** | Overview only: *Most used* (default), *5-hour session* or *Weekly*. A chosen window is named in the row (`Claude 5h`, `Codex Wk`); one the plan doesn't have reads `N/A`. |
 
 ### What the key says when there's no reading
 
@@ -52,7 +53,7 @@ saves the choice, so the key keeps showing it.
 | `Sign in` | No login found for the agent. | Sign in to the agent (`claude auth login`, `codex login`, `gh auth login`, `grok login`). |
 | `Expired` | The login's access token has expired. | Run the agent; it renews its login as it runs. For Claude, see below. |
 | `N/A` | Signed in a way that has no plan usage (an API key), or the chosen window isn't on your plan. | Sign in with your subscription, or choose another window. |
-| `…` + `rate limited` | The usage endpoint asked the plugin to back off; it retries after 10 minutes. | — |
+| `…` + `rate limited` | The usage endpoint asked the plugin to back off. It waits as long as the server says (its `Retry-After`, or 10 minutes if it doesn't say) — presses included. | — |
 | `Error` + `offline?` | The usage endpoint couldn't be reached and there's no earlier reading. | — |
 
 Once a key has a reading, it keeps showing it through network hiccups.
@@ -66,10 +67,12 @@ Once a key has a reading, it keeps showing it through network hiccups.
 | GitHub Copilot | `GET api.github.com/copilot_internal/user` | `GH_TOKEN` / `GITHUB_TOKEN`, else `gh auth token` |
 | Grok | `GET cli-chat-proxy.grok.com/v1/billing?format=credits`, the endpoint the Grok CLI uses (plus `/v1/settings` for the plan name) | `~/.grok/auth.json` (or `$GROK_HOME`) |
 
-An agent is only polled while a key showing it is visible: every 2 minutes
-for Claude, Codex and Grok, and every 5 for Copilot (its quotas are monthly).
-Pressing a key refreshes it straight away. Keys re-render every 15 seconds so
-reset countdowns stay current.
+An agent is only polled while a key showing it is visible: every 5 minutes
+for Claude (Anthropic's usage endpoint rate-limits readily) and Copilot (its
+quotas are monthly), and every 2 minutes for Codex and Grok. Pressing a key
+refreshes it straight away, at most once every 30 seconds per agent, and never
+while the agent is backing off from a rate limit. Keys re-render every 15
+seconds so reset countdowns stay current.
 
 These are the endpoints the agents and their editor integrations use; they
 aren't public, documented APIs, so a vendor change can break a key until the

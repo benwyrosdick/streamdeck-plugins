@@ -36,6 +36,8 @@ export class ProviderError extends Error {
 	constructor(
 		readonly kind: ProviderErrorKind,
 		message: string,
+		/** For `rateLimited`: when the server said to try again (its Retry-After), epoch ms. */
+		readonly retryAt?: number,
 	) {
 		super(message);
 		this.name = "ProviderError";

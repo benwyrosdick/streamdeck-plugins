@@ -44,7 +44,7 @@ streamDeck.settings.onDidReceiveGlobalSettings<JsonObject>(async (ev) => {
 		await streamDeck.settings.setGlobalSettings(globals as unknown as JsonObject);
 	}
 	if (toggled) {
-		await store.refresh("claude");
+		await store.refresh("claude", { force: true });
 	}
 });
 
@@ -63,5 +63,5 @@ await streamDeck.connect();
 globals = await streamDeck.settings.getGlobalSettings<GlobalSettings & JsonObject>();
 // Keys can appear before the global settings arrive; re-read Claude with the opt-in in effect.
 if (globals.claudeRefresh) {
-	await store.refresh("claude");
+	await store.refresh("claude", { force: true });
 }

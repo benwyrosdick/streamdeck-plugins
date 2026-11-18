@@ -23,7 +23,7 @@ export async function requestJson<T>(fetchImpl: Fetch, url: string, init: Reques
 		throw new ProviderError("expired", "The login was rejected (HTTP 401)");
 	}
 	if (response.status === 429) {
-		throw new ProviderError("rateLimited", "Rate limited (HTTP 429)");
+		throw new ProviderError("rateLimited", "Rate limited (HTTP 429)", retryAt(response.headers.get("retry-after")));
 	}
 	if (!response.ok) {
 		throw new ProviderError("failed", `HTTP ${response.status}`);
@@ -33,6 +33,19 @@ export async function requestJson<T>(fetchImpl: Fetch, url: string, init: Reques
 	} catch {
 		throw new ProviderError("failed", "Unexpected response");
 	}
+}
+
+/** A Retry-After header (seconds, or an HTTP date) as epoch ms; `undefined` when absent or unparseable. */
+export function retryAt(header: string | null, now = Date.now()): number | undefined {
+	if (!header) {
+		return undefined;
+	}
+	const seconds = Number(header);
+	if (Number.isFinite(seconds) && seconds >= 0) {
+		return now + seconds * 1000;
+	}
+	const date = Date.parse(header);
+	return Number.isNaN(date) ? undefined : date;
 }
 
 /** Reads and parses a JSON file, or `undefined` if it's missing or malformed. */

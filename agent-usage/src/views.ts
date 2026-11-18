@@ -25,7 +25,16 @@ export type AgentSettings = {
 
 export type OverviewSettings = Pick<AgentSettings, "colorize" | "warnAt" | "critAt"> & {
 	agents?: ProviderId[];
+	/** Claude's row: a window id (`session`, `weekly`), or blank for whichever is most used. */
+	claudeWindow?: string;
+	/** Codex's row, likewise. */
+	codexWindow?: string;
 };
+
+/** Agents whose Overview row can be pinned to one window, and the setting that holds it. */
+export const OVERVIEW_WINDOW_SETTINGS = { claude: "claudeWindow", codex: "codexWindow" } as const satisfies Partial<
+	Record<ProviderId, keyof OverviewSettings>
+>;
 
 export const AGENTS: Record<ProviderId, { name: string; /** What fixes a missing or expired login. */ fix: string }> = {
 	claude: { name: "Claude", fix: "run Claude Code" },
@@ -191,20 +200,34 @@ export function overviewAgents(settings: OverviewSettings): ProviderId[] {
 	return DEFAULT_AGENTS.filter((id) => chosen.includes(id));
 }
 
-/** One row per agent, showing its tightest window. */
+/** The window an agent's Overview row is pinned to, if any. */
+export function overviewWindow(id: ProviderId, settings: OverviewSettings): string | undefined {
+	const key = OVERVIEW_WINDOW_SETTINGS[id as keyof typeof OVERVIEW_WINDOW_SETTINGS];
+	return (key && settings[key]) || undefined;
+}
+
+/** Window labels shortened for an Overview row: "Week" won't fit beside the agent's name. */
+const ROW_WINDOW_LABELS: Record<string, string> = { Week: "Wk" };
+
+/** One row per agent: its pinned window, or else its most-used one. */
 export function overviewView(states: Partial<Record<ProviderId, ProviderState>>, settings: OverviewSettings): OverviewView {
 	const rows = overviewAgents(settings).map((id): OverviewRow => {
 		const { snapshot, error } = states[id] ?? {};
-		const label = AGENTS[id].name;
+		const pinned = overviewWindow(id, settings);
+		const name = AGENTS[id].name;
 		if (error && (!snapshot || HIDES_READING.has(error.kind))) {
-			return { label, value: PROBLEMS[error.kind](id).value, fraction: 0, level: "idle" };
+			return { label: name, value: PROBLEMS[error.kind](id).value, fraction: 0, level: "idle" };
 		}
 		if (!snapshot) {
-			return { label, value: "…", fraction: 0, level: "idle" };
+			return { label: name, value: "…", fraction: 0, level: "idle" };
 		}
-		const window = tightestWindow(snapshot.windows);
+		const window = pinned ? snapshot.windows.find((w) => w.id === pinned) : tightestWindow(snapshot.windows);
+		// Name the window only when it was chosen; "most used" can change from one refresh to the next.
+		const label = pinned && window ? `${name} ${ROW_WINDOW_LABELS[window.label] ?? window.label}` : name;
 		if (!window || window.usedPercent === undefined) {
-			return { label, value: snapshot.windows.length ? "∞" : "N/A", fraction: 0, level: "normal" };
+			// An unlimited window reads ∞; a pinned window the plan doesn't have reads N/A.
+			const unlimited = window !== undefined || (!pinned && snapshot.windows.length > 0);
+			return { label, value: unlimited ? "∞" : "N/A", fraction: 0, level: "normal" };
 		}
 		return { label, value: `${Math.round(window.usedPercent)}%`, fraction: window.usedPercent / 100, level: levelFor(window.usedPercent, settings) };
 	});

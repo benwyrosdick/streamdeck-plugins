@@ -73,6 +73,16 @@ describe("keySvg", () => {
 	});
 });
 
+describe("overview rows", () => {
+	it("give a label the room its value leaves", () => {
+		const row = (label: string, value: string) => keySvg({ kind: "overview", rows: [{ label, value, fraction: 0.4, level: "normal" }] });
+		const labelSize = (svg: string) => Number(/font-size="(\d+)"[^>]*text-anchor="start">/.exec(svg)?.[1]);
+		// A short value leaves room for "Claude Wk" at a readable size; a long one squeezes it.
+		expect(labelSize(row("Claude Wk", "42%"))).toBeGreaterThanOrEqual(14);
+		expect(labelSize(row("Claude Wk", "Expired"))).toBeLessThan(labelSize(row("Claude Wk", "42%")));
+	});
+});
+
 describe("fitSize", () => {
 	it("shrinks long text to fit", () => {
 		expect(fitSize("20%", 46, 128)).toBe(46);
