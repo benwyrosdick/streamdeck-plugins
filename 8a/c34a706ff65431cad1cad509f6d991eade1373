@@ -1,0 +1,112 @@
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/en.json
+  s_ac87241640308a::t_6059a773114966 1-21
+agent-usage/.vscode/settings.json
+  s_ac87241640308a::t_322d6d627ce619 1-13
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/claude/key.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/plugin/category-icon.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/ui/codex.html
+  s_ac87241640308a::t_6059a773114966 1-85
+agent-usage/test/store.test.ts
+  s_ac87241640308a::t_511625073196ec 1-103
+agent-usage/test/views.test.ts
+  s_ac87241640308a::t_21207de53ffa64 1-125
+agent-usage/scripts/generate-images.ts
+  s_ac87241640308a::t_ba0fc5666f5e2c 1-79,83-129,131-149
+  s_ac87241640308a::t_c2b62e0655b9a1 80-82,130
+agent-usage/.vscode/launch.json
+  s_ac87241640308a::t_322d6d627ce619 1-16
+Justfile
+  s_ac87241640308a::t_6d3d4a0e9a549f 11
+  s_ac87241640308a::t_4e2b5926a9dfcf 6
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/ui/claude.html
+  s_ac87241640308a::t_6059a773114966 1-100
+agent-usage/test/actions.test.ts
+  s_ac87241640308a::t_9ed0789f714cbb 1-96
+agent-usage/src/actions/agent-key.ts
+  s_ac87241640308a::t_6f6a2296e19a78 1-50
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/codex/key.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/src/actions/overview.ts
+  s_ac87241640308a::t_6f6a2296e19a78 1-23
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/copilot/key.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/src/providers/http.ts
+  s_ac87241640308a::t_fbc85311befae7 1-69
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/ui/copilot.html
+  s_ac87241640308a::t_6059a773114966 1-85
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/overview/icon.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/overview/key.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+README.md
+  s_ac87241640308a::t_4e2b5926a9dfcf 10,15,46-47
+agent-usage/LICENSE
+  s_ac87241640308a::t_322d6d627ce619 1-21
+agent-usage/src/plugin.ts
+  s_ac87241640308a::t_4e8c078d6e6c11 62-65
+  s_ac87241640308a::t_d5b729774acb28 1-61
+agent-usage/tsconfig.json
+  s_ac87241640308a::t_322d6d627ce619 1-18
+agent-usage/src/store.ts
+  s_ac87241640308a::t_570b687ab03049 1-155
+agent-usage/package.json
+  s_ac87241640308a::t_322d6d627ce619 1-35
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/manifest.json
+  s_ac87241640308a::t_6059a773114966 1-132
+agent-usage/src/providers/codex.ts
+  s_ac87241640308a::t_4d006543703561 1-84
+agent-usage/src/providers/types.ts
+  s_ac87241640308a::t_95d53627d28055 1-49
+agent-usage/src/render.ts
+  s_ac87241640308a::t_c2b62e0655b9a1 136
+  s_ac87241640308a::t_322d6d627ce619 1-135,137-304
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/ui/overview.html
+  s_ac87241640308a::t_6059a773114966 1-57
+agent-usage/src/providers/claude.ts
+  s_ac87241640308a::t_74d27b90971db9 1-186
+agent-usage/.gitignore
+  s_ac87241640308a::t_322d6d627ce619 1-18
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/codex/icon.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/copilot/icon.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/rollup.config.mjs
+  s_ac87241640308a::t_322d6d627ce619 1-50
+agent-usage/src/actions/key-action.ts
+  s_ac87241640308a::t_6f6a2296e19a78 1-158
+.github/workflows/agent-usage.yml
+  s_ac87241640308a::t_6d3d4a0e9a549f 1-51
+agent-usage/src/providers/copilot.ts
+  s_ac87241640308a::t_4b3b67ddfc0be7 1-100
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/claude/icon.svg
+  s_ac87241640308a::t_c2b62e0655b9a1 1
+agent-usage/test/providers.test.ts
+  s_ac87241640308a::t_d25c26b838078b 1-258
+agent-usage/README.md
+  s_ac87241640308a::t_4a129af5bdaa86 1-142
+agent-usage/src/views.ts
+  s_ac87241640308a::t_c2b62e0655b9a1 157-159
+  s_ac87241640308a::t_fdf916a5249fa4 1-156,160-210
+agent-usage/package-lock.json
+  s_ac87241640308a::t_f9cd1b5318c3a9 1-3119
+agent-usage/test/render.test.ts
+  s_ac87241640308a::t_a1a75977d4b456 1-81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8ac34a706ff65431cad1cad509f6d991eade1373",
+  "prompts": {},
+  "sessions": {
+    "s_ac87241640308a": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1ea2b-bf80-748f-a9ce-aaa998e5f0c3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
