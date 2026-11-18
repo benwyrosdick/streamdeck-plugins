@@ -1,0 +1,132 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+	"Name": "Agent Usage",
+	"Version": "1.0.0.0",
+	"Author": "Ben Wyrosdick",
+	"Actions": [
+		{
+			"Name": "Claude Code",
+			"UUID": "com.benwyrosdick.agent-usage.claude",
+			"Icon": "imgs/actions/claude/icon",
+			"Tooltip": "Claude Code plan usage: the 5-hour session and weekly limits. Press to step through the windows.",
+			"PropertyInspectorPath": "ui/claude.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Next window",
+					"Touch": "Next window"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/claude/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "Codex",
+			"UUID": "com.benwyrosdick.agent-usage.codex",
+			"Icon": "imgs/actions/codex/icon",
+			"Tooltip": "Codex plan usage: the 5-hour and weekly limits. Press to step through the windows.",
+			"PropertyInspectorPath": "ui/codex.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Next window",
+					"Touch": "Next window"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/codex/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "GitHub Copilot",
+			"UUID": "com.benwyrosdick.agent-usage.copilot",
+			"Icon": "imgs/actions/copilot/icon",
+			"Tooltip": "GitHub Copilot's monthly premium requests. Press to step through the quotas.",
+			"PropertyInspectorPath": "ui/copilot.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Next quota",
+					"Touch": "Next quota"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/copilot/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"Name": "Overview",
+			"UUID": "com.benwyrosdick.agent-usage.overview",
+			"Icon": "imgs/actions/overview/icon",
+			"Tooltip": "Every agent's tightest limit on one key. Press to refresh.",
+			"PropertyInspectorPath": "ui/overview.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Refresh",
+					"Touch": "Refresh"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/overview/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		}
+	],
+	"Category": "Agent Usage",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Claude Code, Codex and GitHub Copilot plan usage on your Stream Deck: session, weekly and monthly limits with reset countdowns and warning colors.",
+	"Icon": "imgs/plugin/marketplace",
+	"URL": "https://github.com/benwyrosdick/streamdeck-plugins",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "7.1"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "24"
+	},
+	"UUID": "com.benwyrosdick.agent-usage"
+}

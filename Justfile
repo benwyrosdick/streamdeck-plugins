@@ -3,12 +3,12 @@
 # `link` swaps the installed copy of a plugin for a symlink to its
 # .sdPlugin folder in this repo, so `build` (or `watch`) plus a restart is
 # all it takes to try a change. Recipes that take a plugin accept a folder
-# name (github, system-monitor, tailscale) or `all`.
+# name (agent-usage, github, system-monitor, tailscale) or `all`.
 #
 # The Elgato CLI's `streamdeck link` / `restart` only know the macOS and
 # Windows apps, so these talk to streamdeckd's control API instead.
 
-plugins := "github system-monitor tailscale"
+plugins := "agent-usage github system-monitor tailscale"
 plugins_dir := env("XDG_DATA_HOME", home_directory() / ".local/share") / "streamdeck-linux/Plugins"
 
 # Shared by every recipe: strict mode, and `resolve` to turn a plugin
