@@ -1,0 +1,150 @@
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/ui/connection.js
+  s_ac87241640308a::t_9abe3d6a785db2 1-38
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/macro/key.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/src/render.ts
+  s_ac87241640308a::t_ec6c6bba49109e 136-142
+  s_ac87241640308a::t_53fd8be8d8f176 1-135,143-200
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/plugin/category-icon.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/.gitignore
+  s_ac87241640308a::t_edac9883079fbc 1-18
+foundry-vtt/package.json
+  s_ac87241640308a::t_7da976976bace7 15-16
+  s_ac87241640308a::t_edac9883079fbc 1-11,13-14,17-38
+  s_ac87241640308a::t_e498897ef75a11 12
+foundry-vtt/module/README.md
+  s_ac87241640308a::t_7da976976bace7 1-14
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/token/icon.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/ui/playlist.html
+  s_ac87241640308a::t_9abe3d6a785db2 1-54
+foundry-vtt/src/actions/foundry-action.ts
+  s_ac87241640308a::t_cd3fe857eeb6d0 1-86,88-209
+  s_ac87241640308a::t_f079d61a8ddb17 87
+foundry-vtt/module/LICENSE
+  s_ac87241640308a::t_7da976976bace7 1-21
+foundry-vtt/src/deck.ts
+  s_ac87241640308a::t_5dfe30a6cc7952 1-118
+foundry-vtt/test/foundry-fake.ts
+  s_ac87241640308a::t_f74aefe227efac 1-120
+foundry-vtt/LICENSE
+  s_ac87241640308a::t_edac9883079fbc 1-21
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/ui/system.html
+  s_ac87241640308a::t_9abe3d6a785db2 1-93
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/combat/icon.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/combat/key.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/.vscode/settings.json
+  s_ac87241640308a::t_edac9883079fbc 1-13
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/scene/icon.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+.github/workflows/foundry-vtt.yml
+  s_ac87241640308a::t_c94a47a15bfe41 6-8,11
+  s_ac87241640308a::t_7da976976bace7 1-4,12-54,58-61
+  s_ac87241640308a::t_c1a3c2bf819384 5,9-10,55-57,62-96
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/playlist/key.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/tsconfig.json
+  s_ac87241640308a::t_edac9883079fbc 1-8,11-19
+  s_ac87241640308a::t_3caf8f750af91f 9-10
+foundry-vtt/src/bridge/pairing.ts
+  s_ac87241640308a::t_04ac35d8712618 1-38
+foundry-vtt/module/module.json
+  s_ac87241640308a::t_f9537bfb7fb09a 1-16
+foundry-vtt/module/scripts/actions.js
+  s_ac87241640308a::t_510ef5cdc95984 1-378
+foundry-vtt/module/scripts/deck.js
+  s_ac87241640308a::t_248749a649bac9 1-115
+foundry-vtt/test/bridge.test.ts
+  s_ac87241640308a::t_9c2dddcbadc1de 35
+  s_ac87241640308a::t_3caf8f750af91f 1-34,36-123
+foundry-vtt/test/module.test.ts
+  s_ac87241640308a::t_3d834cce1bfa84 1-7,9-76,81-250
+  s_ac87241640308a::t_a5e30ee40251ee 8,77-80
+foundry-vtt/module/scripts/bridge.js
+  s_ac87241640308a::t_6e981546a8eee3 1-179
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/ui/combat.html
+  s_ac87241640308a::t_9abe3d6a785db2 1-54
+foundry-vtt/module/scripts/main.js
+  s_ac87241640308a::t_248749a649bac9 1-79
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/ui/scene.html
+  s_ac87241640308a::t_9abe3d6a785db2 1-51
+foundry-vtt/src/plugin.ts
+  s_ac87241640308a::t_f079d61a8ddb17 1-85
+foundry-vtt/scripts/pack-module.sh
+  s_ac87241640308a::t_7da976976bace7 1-8
+foundry-vtt/module/scripts/sha256.js
+  s_ac87241640308a::t_f9537bfb7fb09a 1-86
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/macro/icon.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/system/icon.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/test/plugin.test.ts
+  s_ac87241640308a::t_9f6c673cd8d9e8 1-185
+foundry-vtt/test/server.test.ts
+  s_ac87241640308a::t_be8926211e2363 1-191
+foundry-vtt/module/scripts/images.js
+  s_ac87241640308a::t_248749a649bac9 1-59
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/ui/token.html
+  s_ac87241640308a::t_9abe3d6a785db2 1-55
+foundry-vtt/.vscode/launch.json
+  s_ac87241640308a::t_edac9883079fbc 1-16
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/ui/macro.html
+  s_ac87241640308a::t_9abe3d6a785db2 1-44
+foundry-vtt/src/status.ts
+  s_ac87241640308a::t_f079d61a8ddb17 1-20
+foundry-vtt/src/bridge/protocol.ts
+  s_ac87241640308a::t_5cac0a073f6785 1-114
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/manifest.json
+  s_ac87241640308a::t_93e1f1fea577f4 1-182
+foundry-vtt/module/lang/en.json
+  s_ac87241640308a::t_248749a649bac9 1-80
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/scene/key.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/en.json
+  s_ac87241640308a::t_93e1f1fea577f4 1-29
+foundry-vtt/rollup.config.mjs
+  s_ac87241640308a::t_63f89b7efd64a5 32-34
+  s_ac87241640308a::t_edac9883079fbc 1-31,35-52
+foundry-vtt/README.md
+  s_ac87241640308a::t_680427d230f3e7 1-186
+foundry-vtt/src/bridge/server.ts
+  s_ac87241640308a::t_ef21d856e30432 1-54,57-68,73-74,77-112,115-160,162-182,184-186,189,192-215,217-292
+  s_ac87241640308a::t_92ce102b8a99c6 113-114
+  s_ac87241640308a::t_9c7f838c18c949 183,188,190-191,216
+  s_ac87241640308a::t_be8926211e2363 55-56,69-72,75-76,161,187
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/playlist/icon.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/system/key.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+foundry-vtt/module/scripts/i18n.js
+  s_ac87241640308a::t_248749a649bac9 1-2
+foundry-vtt/scripts/generate-images.ts
+  s_ac87241640308a::t_e498897ef75a11 1-94
+foundry-vtt/com.benwyrosdick.foundry-vtt.sdPlugin/imgs/actions/token/key.svg
+  s_ac87241640308a::t_e498897ef75a11 1
+Justfile
+  s_ac87241640308a::t_a8e2ee1352df0e 6,11
+README.md
+  s_ac87241640308a::t_5ddc9b47217096 11,17,48-49
+foundry-vtt/package-lock.json
+  s_ac87241640308a::t_b0a51fa11afcfd 1-3131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6b1a671353a3a693249b0894778aa0e468389ad0",
+  "prompts": {},
+  "sessions": {
+    "s_ac87241640308a": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1ea2b-bf80-748f-a9ce-aaa998e5f0c3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
