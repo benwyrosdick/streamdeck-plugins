@@ -1,0 +1,16 @@
+{
+	"id": "stream-deck-bridge",
+	"title": "Stream Deck Bridge",
+	"description": "Control Foundry VTT from an Elgato Stream Deck: macros, scenes, the selected token, the combat tracker, playlists and sounds, pause, dice, roll tables and chat. Requires the Foundry VTT Stream Deck plugin (com.benwyrosdick.foundry-vtt).",
+	"version": "1.0.0",
+	"authors": [{ "name": "Ben Wyrosdick" }],
+	"url": "https://github.com/benwyrosdick/streamdeck-plugins/tree/main/foundry-vtt",
+	"manifest": "https://raw.githubusercontent.com/benwyrosdick/streamdeck-plugins/main/foundry-vtt/module/module.json",
+	"download": "https://github.com/benwyrosdick/streamdeck-plugins/releases/download/foundry-vtt-v1.0.0/stream-deck-bridge.zip",
+	"license": "LICENSE",
+	"readme": "README.md",
+	"bugs": "https://github.com/benwyrosdick/streamdeck-plugins/issues",
+	"compatibility": { "minimum": "13", "verified": "14" },
+	"esmodules": ["scripts/main.js"],
+	"languages": [{ "lang": "en", "name": "English", "path": "lang/en.json" }]
+}

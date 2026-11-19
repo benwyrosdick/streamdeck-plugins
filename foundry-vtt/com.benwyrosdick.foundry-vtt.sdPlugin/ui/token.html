@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>Token Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+		<style>
+			.pairing-code { flex: 1; font-family: monospace; font-size: 13px; letter-spacing: 1px; background: #3d3d3d; color: #d8d8d8; border: none; border-radius: 3px; padding: 4px 6px; }
+			.pairing-button { margin-left: 6px; }
+			.connection-status { margin: 0; }
+		</style>
+	</head>
+
+	<body>
+		<!--
+		Shows the token selected on the canvas. Bar 1 is usually hit points, whatever the game system.
+		-->
+		<sdpi-item label="Show">
+			<sdpi-select setting="show" default="name">
+				<option value="name">Name</option>
+				<option value="nameBar">Name and bar 1</option>
+				<option value="bar">Bar 1 only</option>
+				<option value="none">Picture only</option>
+			</sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="On press">
+			<sdpi-select setting="onPress" default="pan">
+				<option value="pan">Centre the view on it</option>
+				<option value="sheet">Open / close its sheet</option>
+			</sdpi-select>
+		</sdpi-item>
+
+		<hr />
+		<sdpi-item label="Foundry">
+			<p id="connection-status" class="connection-status">…</p>
+		</sdpi-item>
+		<sdpi-item label="Pairing code">
+			<input id="pairing-code" class="pairing-code" readonly />
+			<sdpi-button id="copy-code" class="pairing-button">Copy</sdpi-button>
+		</sdpi-item>
+		<sdpi-item>
+			<p>
+				In Foundry: Game Settings → Configure Settings → Stream Deck Bridge → Pairing code. Paste it once per browser.
+			</p>
+		</sdpi-item>
+		<sdpi-item label="New code">
+			<sdpi-button id="new-code">Make a new code</sdpi-button>
+		</sdpi-item>
+		<sdpi-item label="Port">
+			<sdpi-textfield setting="port" global pattern="\d*" placeholder="3010"></sdpi-textfield>
+		</sdpi-item>
+
+		<script src="connection.js"></script>
+	</body>
+</html>

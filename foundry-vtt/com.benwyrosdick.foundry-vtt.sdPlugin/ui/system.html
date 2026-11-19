@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>System Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+		<style>
+			.pairing-code { flex: 1; font-family: monospace; font-size: 13px; letter-spacing: 1px; background: #3d3d3d; color: #d8d8d8; border: none; border-radius: 3px; padding: 4px 6px; }
+			.pairing-button { margin-left: 6px; }
+			.connection-status { margin: 0; }
+		</style>
+	</head>
+
+	<body>
+		<!--
+		Pause, dice, roll tables, chat, scene darkness and sidebar tabs.
+		-->
+		<sdpi-item label="Function">
+			<sdpi-select setting="fn" default="pause">
+				<option value="pause">Pause / resume (GM)</option>
+				<option value="roll">Roll dice</option>
+				<option value="table">Draw from a roll table</option>
+				<option value="chat">Post a chat message</option>
+				<option value="darkness">Set scene darkness (GM)</option>
+				<option value="sidebar">Open a sidebar tab</option>
+			</sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="Formula" data-show="fn:roll" data-default="pause">
+			<sdpi-textfield setting="formula" placeholder="1d20 + 5"></sdpi-textfield>
+		</sdpi-item>
+		<sdpi-item label="Label" data-show="fn:roll" data-default="pause">
+			<sdpi-textfield setting="label" placeholder="Stealth"></sdpi-textfield>
+		</sdpi-item>
+		<sdpi-item label="Roll mode" data-show="fn:roll" data-default="pause">
+			<sdpi-select setting="rollMode" default="current">
+				<option value="current">Chat's current mode</option>
+				<option value="public">Public</option>
+				<option value="gm">GM only</option>
+				<option value="self">Just me</option>
+			</sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="Table" data-show="fn:table" data-default="pause">
+			<sdpi-select setting="table" datasource="getTables" show-refresh placeholder="Choose a roll table" loading="Asking Foundry…"></sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="Message" data-show="fn:chat" data-default="pause">
+			<sdpi-textfield setting="message" placeholder="Short rest!"></sdpi-textfield>
+		</sdpi-item>
+		<sdpi-item label="Whisper" data-show="fn:chat" data-default="pause">
+			<sdpi-checkbox setting="whisperGM" label="To the GM only"></sdpi-checkbox>
+		</sdpi-item>
+		<sdpi-item label="Darkness" data-show="fn:darkness" data-default="pause">
+			<sdpi-range setting="darkness" min="0" max="100" step="10" default="100" showlabels></sdpi-range>
+		</sdpi-item>
+		<sdpi-item label="Tab" data-show="fn:sidebar" data-default="pause">
+			<sdpi-select setting="tab" default="chat">
+				<option value="chat">Chat</option>
+				<option value="combat">Combat</option>
+				<option value="scenes">Scenes</option>
+				<option value="actors">Actors</option>
+				<option value="items">Items</option>
+				<option value="journal">Journal</option>
+				<option value="tables">Tables</option>
+				<option value="cards">Cards</option>
+				<option value="macros">Macros</option>
+				<option value="playlists">Playlists</option>
+				<option value="compendium">Compendiums</option>
+				<option value="settings">Settings</option>
+			</sdpi-select>
+		</sdpi-item>
+
+		<hr />
+		<sdpi-item label="Foundry">
+			<p id="connection-status" class="connection-status">…</p>
+		</sdpi-item>
+		<sdpi-item label="Pairing code">
+			<input id="pairing-code" class="pairing-code" readonly />
+			<sdpi-button id="copy-code" class="pairing-button">Copy</sdpi-button>
+		</sdpi-item>
+		<sdpi-item>
+			<p>
+				In Foundry: Game Settings → Configure Settings → Stream Deck Bridge → Pairing code. Paste it once per browser.
+			</p>
+		</sdpi-item>
+		<sdpi-item label="New code">
+			<sdpi-button id="new-code">Make a new code</sdpi-button>
+		</sdpi-item>
+		<sdpi-item label="Port">
+			<sdpi-textfield setting="port" global pattern="\d*" placeholder="3010"></sdpi-textfield>
+		</sdpi-item>
+
+		<script src="connection.js"></script>
+	</body>
+</html>

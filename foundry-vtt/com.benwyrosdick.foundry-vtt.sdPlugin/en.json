@@ -1,0 +1,29 @@
+{
+	"Name": "Foundry VTT",
+	"Description": "Control Foundry Virtual Tabletop (v13/v14) from your Stream Deck: macros, scenes, the selected token, combat, music, pause, dice, roll tables and chat. Requires the Stream Deck Bridge Foundry module.",
+	"Category": "Foundry VTT",
+	"com.benwyrosdick.foundry-vtt.macro": {
+		"Name": "Macro",
+		"Tooltip": "Runs a Foundry macro, showing its image and name."
+	},
+	"com.benwyrosdick.foundry-vtt.scene": {
+		"Name": "Scene",
+		"Tooltip": "Views or activates a Foundry scene, showing its thumbnail and whether it's active."
+	},
+	"com.benwyrosdick.foundry-vtt.token": {
+		"Name": "Token",
+		"Tooltip": "Shows the selected token (name, bar 1) and centres on it or opens its sheet."
+	},
+	"com.benwyrosdick.foundry-vtt.combat": {
+		"Name": "Combat",
+		"Tooltip": "Drives the Foundry combat tracker: turns, rounds, start/end, initiative."
+	},
+	"com.benwyrosdick.foundry-vtt.playlist": {
+		"Name": "Music & Sounds",
+		"Tooltip": "Starts or stops a Foundry playlist or sound."
+	},
+	"com.benwyrosdick.foundry-vtt.system": {
+		"Name": "System",
+		"Tooltip": "Pause, dice rolls, roll tables, chat messages, scene darkness and sidebar tabs."
+	}
+}

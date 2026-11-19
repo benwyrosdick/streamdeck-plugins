@@ -1,0 +1,80 @@
+{
+	"SDBRIDGE": {
+		"Settings": {
+			"Connect": {
+				"Name": "Connect to the Stream Deck from this browser",
+				"Hint": "Auto connects only when you're the GM, so players aren't asked for local network access.",
+				"auto": "Auto (GM only)",
+				"always": "Always",
+				"never": "Never"
+			},
+			"PairingCode": {
+				"Name": "Pairing code",
+				"Hint": "The code shown in any Foundry VTT key's settings in the Stream Deck app, under Foundry connection."
+			},
+			"Port": { "Name": "Plugin port", "Hint": "Must match the port in the Stream Deck plugin (3010 unless you changed it)." },
+			"Host": { "Name": "Plugin address", "Hint": "Keep 127.0.0.1 when the Stream Deck is plugged into this computer." },
+			"Notify": { "Name": "Connection notifications", "Hint": "Say when the Stream Deck connects." }
+		},
+		"Status": {
+			"Connected": "Stream Deck connected.",
+			"NoCode": "Stream Deck Bridge: enter the pairing code from the Stream Deck plugin in this module's settings.",
+			"BadCode": "Stream Deck Bridge: the Stream Deck plugin rejected the pairing code. Copy it again from a key's settings.",
+			"BadProof": "Stream Deck Bridge: the program on the plugin port doesn't know the pairing code, so it was ignored.",
+			"Replaced": "Another Foundry window is now controlling the Stream Deck."
+		},
+		"Keys": {
+			"Missing": "Missing",
+			"ChooseMacro": "Choose macro",
+			"ChooseScene": "Choose scene",
+			"NoToken": "No token",
+			"NoCombat": "No combat",
+			"NotStarted": "Not started",
+			"TurnOf": "Turn {n}/{total}",
+			"NextTurn": "Next turn",
+			"PreviousTurn": "Prev. turn",
+			"NextRound": "Next round",
+			"PreviousRound": "Prev. round",
+			"StartCombat": "Start",
+			"EndCombat": "End combat",
+			"RollAll": "Roll all",
+			"RollNPC": "Roll NPCs",
+			"StopAll": "Stop all",
+			"ChoosePlaylist": "Choose playlist",
+			"ChooseSound": "Choose sound",
+			"Pause": "Pause",
+			"Resume": "Resume",
+			"ChooseFormula": "Set a formula",
+			"ChooseTable": "Choose table",
+			"ChooseMessage": "Set a message"
+		},
+		"Tabs": {
+			"chat": "Chat",
+			"combat": "Combat",
+			"scenes": "Scenes",
+			"actors": "Actors",
+			"items": "Items",
+			"journal": "Journal",
+			"tables": "Tables",
+			"cards": "Cards",
+			"macros": "Macros",
+			"playlists": "Playlists",
+			"compendium": "Compendiums",
+			"settings": "Settings"
+		},
+		"Errors": {
+			"GMOnly": "Only the GM can do that.",
+			"MacroMissing": "That macro no longer exists.",
+			"MacroNoPermission": "You can't run the macro {name}.",
+			"SceneMissing": "That scene no longer exists.",
+			"NoToken": "Select a token first.",
+			"NoActor": "The selected token has no actor.",
+			"NoCombat": "There's no combat.",
+			"NoCombatNoSelection": "There's no combat: select the tokens to fight first.",
+			"PlaylistMissing": "That playlist no longer exists.",
+			"SoundMissing": "That sound no longer exists.",
+			"TableMissing": "That roll table no longer exists.",
+			"Unknown": "This key isn't set up."
+		}
+	}
+}

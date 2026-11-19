@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<title>Music & Sounds Settings</title>
+		<meta charset="utf-8" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+		<style>
+			.pairing-code { flex: 1; font-family: monospace; font-size: 13px; letter-spacing: 1px; background: #3d3d3d; color: #d8d8d8; border: none; border-radius: 3px; padding: 4px 6px; }
+			.pairing-button { margin-left: 6px; }
+			.connection-status { margin: 0; }
+		</style>
+	</head>
+
+	<body>
+		<!--
+		Starts or stops a playlist or a single sound; green border while it plays.
+		-->
+		<sdpi-item label="Play">
+			<sdpi-select setting="mode" default="playlist">
+				<option value="playlist">A playlist</option>
+				<option value="sound">A sound in a playlist</option>
+				<option value="stopAll">Stop everything</option>
+			</sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="Playlist" data-show="mode:playlist,sound" data-default="playlist">
+			<sdpi-select setting="playlist" datasource="getPlaylists" show-refresh placeholder="Choose a playlist" loading="Asking Foundry…"></sdpi-select>
+		</sdpi-item>
+		<sdpi-item label="Sound" data-show="mode:sound" data-default="playlist">
+			<sdpi-select setting="sound" datasource="getSounds" show-refresh placeholder="Choose a sound" loading="Asking Foundry…"></sdpi-select>
+		</sdpi-item>
+
+		<hr />
+		<sdpi-item label="Foundry">
+			<p id="connection-status" class="connection-status">…</p>
+		</sdpi-item>
+		<sdpi-item label="Pairing code">
+			<input id="pairing-code" class="pairing-code" readonly />
+			<sdpi-button id="copy-code" class="pairing-button">Copy</sdpi-button>
+		</sdpi-item>
+		<sdpi-item>
+			<p>
+				In Foundry: Game Settings → Configure Settings → Stream Deck Bridge → Pairing code. Paste it once per browser.
+			</p>
+		</sdpi-item>
+		<sdpi-item label="New code">
+			<sdpi-button id="new-code">Make a new code</sdpi-button>
+		</sdpi-item>
+		<sdpi-item label="Port">
+			<sdpi-textfield setting="port" global pattern="\d*" placeholder="3010"></sdpi-textfield>
+		</sdpi-item>
+
+		<script src="connection.js"></script>
+	</body>
+</html>

@@ -1,0 +1,96 @@
+name: Foundry VTT
+
+on:
+  push:
+    # A foundry-vtt-vX.Y.Z tag also publishes a release (the module's download URL points at it).
+    # Listing tags means branches must be listed too, or branch pushes stop triggering.
+    branches:
+      - "**"
+    tags:
+      - "foundry-vtt-v*"
+    # Path filters only apply to branch pushes; tag pushes always run.
+    paths:
+      - "foundry-vtt/**"
+      - ".github/workflows/foundry-vtt.yml"
+  pull_request:
+    paths:
+      - "foundry-vtt/**"
+      - ".github/workflows/foundry-vtt.yml"
+
+defaults:
+  run:
+    working-directory: foundry-vtt
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: foundry-vtt/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate plugin
+        run: npm run validate
+
+      - name: Package plugin
+        run: npx streamdeck pack com.benwyrosdick.foundry-vtt.sdPlugin --output dist --force
+
+      - name: Package Foundry module
+        run: npm run module
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: com.benwyrosdick.foundry-vtt.streamDeckPlugin
+          path: foundry-vtt/dist/*.streamDeckPlugin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stream-deck-bridge
+          path: foundry-vtt/dist/stream-deck-bridge.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/foundry-vtt-v')
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Check the tag matches module.json
+        run: |
+          tag="${GITHUB_REF_NAME#foundry-vtt-v}"
+          version="$(jq -r .version module/module.json)"
+          test "$tag" = "$version" || { echo "Tag $tag doesn't match module.json version $version"; exit 1; }
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "Foundry VTT ${GITHUB_REF_NAME#foundry-vtt-v}" \
+            --notes "Stream Deck plugin and the Stream Deck Bridge Foundry module." \
+            ../artifacts/*.streamDeckPlugin ../artifacts/stream-deck-bridge.zip module/module.json

@@ -1,0 +1,182 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+	"Name": "Foundry VTT",
+	"Version": "1.0.0.0",
+	"Author": "Ben Wyrosdick",
+	"Actions": [
+		{
+			"Name": "Macro",
+			"UUID": "com.benwyrosdick.foundry-vtt.macro",
+			"Icon": "imgs/actions/macro/icon",
+			"Tooltip": "Runs a Foundry macro, showing its image and name.",
+			"PropertyInspectorPath": "ui/macro.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Run macro",
+					"Touch": "Run macro"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/macro/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Scene",
+			"UUID": "com.benwyrosdick.foundry-vtt.scene",
+			"Icon": "imgs/actions/scene/icon",
+			"Tooltip": "Views or activates a Foundry scene, showing its thumbnail and whether it's active.",
+			"PropertyInspectorPath": "ui/scene.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Go to scene",
+					"Touch": "Go to scene"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/scene/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Token",
+			"UUID": "com.benwyrosdick.foundry-vtt.token",
+			"Icon": "imgs/actions/token/icon",
+			"Tooltip": "Shows the selected token (name, bar 1) and centres on it or opens its sheet.",
+			"PropertyInspectorPath": "ui/token.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Token action",
+					"Touch": "Token action"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/token/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Combat",
+			"UUID": "com.benwyrosdick.foundry-vtt.combat",
+			"Icon": "imgs/actions/combat/icon",
+			"Tooltip": "Drives the Foundry combat tracker: turns, rounds, start/end, initiative.",
+			"PropertyInspectorPath": "ui/combat.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Combat action",
+					"Touch": "Combat action"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/combat/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "Music & Sounds",
+			"UUID": "com.benwyrosdick.foundry-vtt.playlist",
+			"Icon": "imgs/actions/playlist/icon",
+			"Tooltip": "Starts or stops a Foundry playlist or sound.",
+			"PropertyInspectorPath": "ui/playlist.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Play / stop",
+					"Touch": "Play / stop"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/playlist/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		},
+		{
+			"Name": "System",
+			"UUID": "com.benwyrosdick.foundry-vtt.system",
+			"Icon": "imgs/actions/system/icon",
+			"Tooltip": "Pause, dice rolls, roll tables, chat messages, scene darkness and sidebar tabs.",
+			"PropertyInspectorPath": "ui/system.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Run",
+					"Touch": "Run"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/system/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": true
+		}
+	],
+	"Category": "Foundry VTT",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Control Foundry Virtual Tabletop (v13/v14) from your Stream Deck: macros, scenes, the selected token, combat, music, pause, dice, roll tables and chat. Requires the Stream Deck Bridge Foundry module.",
+	"Icon": "imgs/plugin/marketplace",
+	"URL": "https://github.com/benwyrosdick/streamdeck-plugins",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "7.1"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "24"
+	},
+	"UUID": "com.benwyrosdick.foundry-vtt"
+}
