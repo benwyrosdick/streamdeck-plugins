@@ -176,6 +176,9 @@ export function agentView(id: ProviderId, state: ProviderState, history: number[
 	const used = window.usedPercent;
 	const shown = remaining ? 100 - used : used;
 	const left = window.remaining !== undefined ? `${window.remaining} left` : undefined;
+	const elapsed = windowPace(window, now);
+	// Showing what's left, the marker moves to the time left; red still means usage is ahead of the clock.
+	const pace = elapsed === undefined ? undefined : { at: remaining ? Math.round((1 - elapsed) * 1000) / 1000 : elapsed, ahead: used / 100 > elapsed };
 	return {
 		kind: "gauge",
 		style,
@@ -185,6 +188,7 @@ export function agentView(id: ProviderId, state: ProviderState, history: number[
 		detail: combined(settings) ? (reset ?? left) : undefined,
 		fraction: Math.round(shown * 10) / 1000,
 		history: history.map((v) => Math.round((remaining ? 100 - v : v) * 10) / 1000),
+		...(pace && { pace }),
 	};
 }
 
@@ -209,8 +213,17 @@ export function overviewWindow(id: ProviderId, settings: OverviewSettings): stri
 /** Window labels shortened for an Overview row: "Week" won't fit beside the agent's name. */
 const ROW_WINDOW_LABELS: Record<string, string> = { Week: "Wk" };
 
+/** How far through its time window a limit is, 0–1; `undefined` without a reset time and length. */
+export function windowPace(window: UsageWindow, now = Date.now()): number | undefined {
+	if (window.resetsAt === undefined || !window.windowMs) {
+		return undefined;
+	}
+	const elapsed = 1 - (window.resetsAt - now) / window.windowMs;
+	return Math.round(Math.min(1, Math.max(0, elapsed)) * 1000) / 1000;
+}
+
 /** One row per agent: its pinned window, or else its most-used one. */
-export function overviewView(states: Partial<Record<ProviderId, ProviderState>>, settings: OverviewSettings): OverviewView {
+export function overviewView(states: Partial<Record<ProviderId, ProviderState>>, settings: OverviewSettings, now = Date.now()): OverviewView {
 	const rows = overviewAgents(settings).map((id): OverviewRow => {
 		const { snapshot, error } = states[id] ?? {};
 		const pinned = overviewWindow(id, settings);
@@ -229,7 +242,9 @@ export function overviewView(states: Partial<Record<ProviderId, ProviderState>>,
 			const unlimited = window !== undefined || (!pinned && snapshot.windows.length > 0);
 			return { label, value: unlimited ? "∞" : "N/A", fraction: 0, level: "normal" };
 		}
-		return { label, value: `${Math.round(window.usedPercent)}%`, fraction: window.usedPercent / 100, level: levelFor(window.usedPercent, settings) };
+		const row: OverviewRow = { label, value: `${Math.round(window.usedPercent)}%`, fraction: window.usedPercent / 100, level: levelFor(window.usedPercent, settings) };
+		const pace = windowPace(window, now);
+		return pace === undefined ? row : { ...row, pace };
 	});
 	return { kind: "overview", rows };
 }

@@ -34,6 +34,7 @@ export function parseCodexUsage(json: CodexUsageJson): UsageWindow[] {
 						label: windowLabel(data.limit_window_seconds, fallback),
 						usedPercent: clampPercent(data.used_percent),
 						resetsAt: toEpochMs(data.reset_at),
+						windowMs: data.limit_window_seconds ? data.limit_window_seconds * 1000 : undefined,
 					},
 				]
 			: [];

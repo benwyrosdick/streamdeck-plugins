@@ -80,8 +80,8 @@ const gauge = (view: Partial<GaugeView> & Pick<GaugeView, "title" | "value" | "f
 
 /** The image each key shows before the plugin first draws it. */
 const actions: Record<string, { glyph: Glyph; key: View }> = {
-	claude: { glyph: "claude", key: gauge({ title: "Claude 5h", value: "42%", detail: "2h 13m", fraction: 0.42 }) },
-	codex: { glyph: "codex", key: gauge({ title: "Codex 5h", value: "18%", detail: "3h 40m", fraction: 0.18 }) },
+	claude: { glyph: "claude", key: gauge({ title: "Claude 5h", value: "42%", detail: "2h 13m", fraction: 0.42, pace: { at: 0.56, ahead: false } }) },
+	codex: { glyph: "codex", key: gauge({ title: "Codex 5h", value: "18%", detail: "3h 40m", fraction: 0.18, pace: { at: 0.27, ahead: false } }) },
 	copilot: { glyph: "copilot", key: gauge({ title: "Copilot", value: "35%", detail: "12d 4h", fraction: 0.35 }) },
 	grok: { glyph: "grok", key: gauge({ title: "Grok Week", value: "12%", detail: "5d 19h", fraction: 0.12 }) },
 	overview: {
@@ -89,10 +89,10 @@ const actions: Record<string, { glyph: Glyph; key: View }> = {
 		key: {
 			kind: "overview",
 			rows: [
-				{ label: "Claude", value: "42%", fraction: 0.42, level: "normal" },
-				{ label: "Codex", value: "76%", fraction: 0.76, level: "warning" },
-				{ label: "Copilot", value: "35%", fraction: 0.35, level: "normal" },
-				{ label: "Grok", value: "12%", fraction: 0.12, level: "normal" },
+				{ label: "Claude", value: "42%", fraction: 0.42, level: "normal", pace: 0.7 },
+				{ label: "Codex", value: "76%", fraction: 0.76, level: "warning", pace: 0.55 },
+				{ label: "Copilot", value: "35%", fraction: 0.35, level: "normal", pace: 0.6 },
+				{ label: "Grok", value: "12%", fraction: 0.12, level: "normal", pace: 0.3 },
 			],
 		},
 	},

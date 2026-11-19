@@ -27,9 +27,25 @@ export type GaugeView = {
 	fraction: number;
 	/** Recent readings scaled to 0–1, oldest first. */
 	history: number[];
+	/**
+	 * Where the limit's time window is, on the same scale as `fraction`, and
+	 * whether usage has run ahead of it. Ring and Bars mark it; other styles don't.
+	 */
+	pace?: { at: number; ahead: boolean };
 };
 
-export type OverviewRow = { label: string; value: string; fraction: number; level: Level };
+export type OverviewRow = {
+	label: string;
+	value: string;
+	/** How full the bar is, 0–1. */
+	fraction: number;
+	level: Level;
+	/** How far through the limit's time window we are, 0–1: drawn as a tick on the bar. */
+	pace?: number;
+};
+
+/** The pace tick: white while usage is behind the clock, red once it's ahead (on track to run out early). */
+export const PACE_COLORS = { behind: "#ffffff", ahead: "#ef4444" } as const;
 
 /** Several metrics stacked on one key. */
 export type OverviewView = { kind: "overview"; rows: OverviewRow[] };
@@ -132,6 +148,7 @@ function ring(view: GaugeView): string {
 		rect("#0d1117"),
 		arc(cx, cy, r, start, sweep, TRACK, 11),
 		fraction > 0.005 ? arc(cx, cy, r, start, sweep * fraction, accent, 11) : "",
+		view.pace ? ringTick(cx, cy, r, start + sweep * clamp01(view.pace.at), view.pace.ahead) : "",
 		text(view.value, cx, view.detail ? 70 : 77, 30, WHITE, 700, "middle", 74),
 		view.detail ? text(view.detail, cx, 91, 14, MUTED, 600, "middle", 66) : "",
 		text(view.title, cx, 134, 19, accent, 700, "middle", 96),
@@ -147,11 +164,15 @@ function bars(view: GaugeView): string {
 	const width = (SIZE - 2 * left - gap * (count - 1)) / count;
 	const bottom = 134;
 	const filled = Math.round(clamp01(view.fraction) * count);
+	// The bar the time window has reached lights up instead of a separate mark (outlined when red,
+	// so it still shows among red bars on a critical key).
+	const paceBar = view.pace ? Math.min(count - 1, Math.floor(clamp01(view.pace.at) * count)) : -1;
+	const paceColor = view.pace?.ahead ? PACE_COLORS.ahead : PACE_COLORS.behind;
 	const [minHeight, maxHeight] = at.combined ? [8, 20] : [10, 28];
 	const meter = Array.from({ length: count }, (_, i) => {
 		const height = minHeight + ((maxHeight - minHeight) * i) / (count - 1);
 		const x = left + i * (width + gap);
-		return `<rect x="${n(x)}" y="${n(bottom - height)}" width="${n(width)}" height="${n(height)}" rx="2.5" fill="${i < filled ? accent : TRACK}"/>`;
+		return `<rect x="${n(x)}" y="${n(bottom - height)}" width="${n(width)}" height="${n(height)}" rx="2.5" fill="${i === paceBar ? paceColor : i < filled ? accent : TRACK}"${i === paceBar && view.pace?.ahead ? ` stroke="${WHITE}" stroke-width="1.5"` : ""}/>`;
 	}).join("");
 	return [
 		rect("#161b26"),
@@ -205,9 +226,31 @@ function overview(view: OverviewView): string {
 			clamp01(row.fraction) > 0
 				? `<rect x="12" y="${n(barY)}" width="${n(Math.max(barHeight, 120 * clamp01(row.fraction)))}" height="${n(barHeight)}" rx="${n(barHeight / 2)}" fill="${accent}"/>`
 				: "",
+			row.pace === undefined ? "" : paceTick(row, barY, barHeight),
 		);
 	});
 	return parts.join("");
+}
+
+/** A short mark across the ring at `angle` (SVG degrees), outlined so it shows on any colour. */
+function ringTick(cx: number, cy: number, r: number, angle: number, ahead: boolean): string {
+	const rad = (angle * Math.PI) / 180;
+	const point = (radius: number) => `${n(cx + radius * Math.cos(rad))} ${n(cy + radius * Math.sin(rad))}`;
+	const d = `M${point(r - 10)}L${point(r + 10)}`;
+	return [
+		`<path d="${d}" stroke="#0d1117" stroke-width="7.5" stroke-linecap="round"/>`,
+		`<path d="${d}" stroke="${ahead ? PACE_COLORS.ahead : PACE_COLORS.behind}" stroke-width="4" stroke-linecap="round"/>`,
+	].join("");
+}
+
+/** A short upright mark on a row's bar at how far through the window we are, overhanging it a little. */
+function paceTick(row: OverviewRow, barY: number, barHeight: number): string {
+	const pace = clamp01(row.pace ?? 0);
+	const color = clamp01(row.fraction) > pace ? PACE_COLORS.ahead : PACE_COLORS.behind;
+	const width = 4.5;
+	const x = Math.min(132 - width, Math.max(12, 12 + 120 * pace - width / 2));
+	// A dark outline keeps the tick distinct even on a bar of the same colour (red on a critical bar).
+	return `<rect x="${n(x)}" y="${n(barY - 3)}" width="${width}" height="${n(barHeight + 6)}" rx="2" fill="${color}" stroke="#10151f" stroke-width="1.5"/>`;
 }
 
 // ---------------------------------------------------------------------- //

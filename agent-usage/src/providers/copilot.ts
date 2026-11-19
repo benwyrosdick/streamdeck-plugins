@@ -47,13 +47,22 @@ export type CopilotUsageJson = {
 	quota_snapshots?: { premium_interactions?: QuotaJson; chat?: QuotaJson; completions?: QuotaJson } | null;
 };
 
+/** A monthly quota's length: from the same day a month before the reset, to the reset. */
+export function monthBefore(resetsAt: number | undefined): number | undefined {
+	if (resetsAt === undefined) return undefined;
+	const start = new Date(resetsAt);
+	start.setUTCMonth(start.getUTCMonth() - 1);
+	return resetsAt - start.getTime();
+}
+
 export function parseCopilotUsage(json: CopilotUsageJson): UsageWindow[] {
 	const resetsAt = toEpochMs(json.quota_reset_date_utc ?? json.quota_reset_date);
+	const windowMs = monthBefore(resetsAt);
 	const window = (id: string, label: string, data: QuotaJson | undefined): UsageWindow[] => {
 		if (!data) return [];
-		if (data.unlimited) return [{ id, label, usedPercent: undefined, resetsAt }];
+		if (data.unlimited) return [{ id, label, usedPercent: undefined, resetsAt, windowMs }];
 		if (typeof data.percent_remaining !== "number") return [];
-		return [{ id, label, usedPercent: clampPercent(100 - data.percent_remaining), resetsAt, remaining: data.remaining }];
+		return [{ id, label, usedPercent: clampPercent(100 - data.percent_remaining), resetsAt, windowMs, remaining: data.remaining }];
 	};
 	const quotas = json.quota_snapshots;
 	return [...window("premium", "Premium", quotas?.premium_interactions), ...window("chat", "Chat", quotas?.chat)];

@@ -53,17 +53,21 @@ export type ClaudeUsageJson = {
 	seven_day_sonnet?: UsageWindowJson;
 };
 
+const HOUR_MS = 3_600_000;
+const WEEK_MS = 7 * 24 * HOUR_MS;
+
 /** Windows in display order; a window the plan doesn't have is left out. */
 export function parseClaudeUsage(json: ClaudeUsageJson): UsageWindow[] {
-	const window = (id: string, label: string, data: UsageWindowJson | undefined): UsageWindow[] =>
+	// The API doesn't say how long its windows are; they're fixed: 5 hours, and a week.
+	const window = (id: string, label: string, windowMs: number, data: UsageWindowJson | undefined): UsageWindow[] =>
 		typeof data?.utilization === "number"
-			? [{ id, label, usedPercent: clampPercent(data.utilization), resetsAt: toEpochMs(data.resets_at) }]
+			? [{ id, label, usedPercent: clampPercent(data.utilization), resetsAt: toEpochMs(data.resets_at), windowMs }]
 			: [];
 	return [
-		...window("session", "5h", json.five_hour),
-		...window("weekly", "Week", json.seven_day ?? json.seven_day_oauth_apps),
-		...window("opus", "Opus", json.seven_day_opus),
-		...window("sonnet", "Sonnet", json.seven_day_sonnet),
+		...window("session", "5h", 5 * HOUR_MS, json.five_hour),
+		...window("weekly", "Week", WEEK_MS, json.seven_day ?? json.seven_day_oauth_apps),
+		...window("opus", "Opus", WEEK_MS, json.seven_day_opus),
+		...window("sonnet", "Sonnet", WEEK_MS, json.seven_day_sonnet),
 	];
 }
 

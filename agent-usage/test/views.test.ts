@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { ProviderError } from "../src/providers/types";
 import type { ProviderState } from "../src/store";
-import { agentView, formatCountdown, levelFor, overviewAgents, overviewView, overviewWindow, selectWindow, tightestWindow } from "../src/views";
+import { agentView, formatCountdown, levelFor, overviewAgents, overviewView, overviewWindow, selectWindow, tightestWindow, windowPace } from "../src/views";
 
 const NOW = Date.parse("2026-11-18T12:00:00Z");
 const MIN = 60_000;
@@ -90,6 +90,19 @@ describe("agentView", () => {
 		expect(agentView("claude", claude, [], { label: "Work" }, NOW).title).toBe("Work 5h");
 	});
 
+	it("carries the window's pace, flipped when showing what's left", () => {
+		const HOUR = 60 * MIN;
+		// 30% used, 1 of 5 hours gone: ahead of the clock.
+		const ahead: ProviderState = { snapshot: { windows: [{ id: "session", label: "5h", usedPercent: 30, resetsAt: NOW + 4 * HOUR, windowMs: 5 * HOUR }] } };
+		expect(agentView("claude", ahead, [], {}, NOW).pace).toEqual({ at: 0.2, ahead: true });
+		expect(agentView("claude", ahead, [], { metric: "remaining" }, NOW).pace).toEqual({ at: 0.8, ahead: true });
+		// 30% used, 4 of 5 hours gone: behind.
+		const behind: ProviderState = { snapshot: { windows: [{ id: "session", label: "5h", usedPercent: 30, resetsAt: NOW + HOUR, windowMs: 5 * HOUR }] } };
+		expect(agentView("claude", behind, [], {}, NOW).pace).toEqual({ at: 0.8, ahead: false });
+		// No window length, no pace.
+		expect(agentView("claude", claude, [], {}, NOW)).not.toHaveProperty("pace");
+	});
+
 	it("titles Grok's credits by their period", () => {
 		const grok: ProviderState = { snapshot: { windows: [{ id: "credits", label: "Week", usedPercent: 1, resetsAt: NOW + 45 * MIN }] } };
 		expect(agentView("grok", grok, [], { style: "classic" }, NOW)).toMatchObject({ title: "Grok Week", value: "1%", detail: "resets 45m" });
@@ -99,6 +112,16 @@ describe("agentView", () => {
 	it("titles Copilot's premium requests as just Copilot", () => {
 		const copilot: ProviderState = { snapshot: { windows: [{ id: "premium", label: "Premium", usedPercent: 35, remaining: 975 }] } };
 		expect(agentView("copilot", copilot, [], {}, NOW)).toMatchObject({ title: "Copilot", value: "35%", detail: "975 left" });
+	});
+});
+
+describe("windowPace", () => {
+	const HOUR = 60 * MIN;
+	it("is the fraction of the window that has passed, clamped", () => {
+		expect(windowPace({ id: "s", label: "5h", usedPercent: 1, resetsAt: NOW + 4.5 * HOUR, windowMs: 5 * HOUR }, NOW)).toBe(0.1);
+		expect(windowPace({ id: "s", label: "5h", usedPercent: 1, resetsAt: NOW - HOUR, windowMs: 5 * HOUR }, NOW)).toBe(1);
+		expect(windowPace({ id: "s", label: "5h", usedPercent: 1, resetsAt: NOW + 9 * HOUR, windowMs: 5 * HOUR }, NOW)).toBe(0);
+		expect(windowPace({ id: "s", label: "5h", usedPercent: 1, windowMs: 5 * HOUR }, NOW)).toBeUndefined();
 	});
 });
 
@@ -156,6 +179,16 @@ describe("overviewView", () => {
 		const copilot: ProviderState = { snapshot: { windows: [{ id: "premium", label: "Premium", usedPercent: 35 }] } };
 		expect(overviewWindow("copilot", { claudeWindow: "session" })).toBeUndefined();
 		expect(overviewView({ copilot }, { agents: ["copilot"] }).rows[0].label).toBe("Copilot");
+	});
+
+	it("marks how far through each row's window we are", () => {
+		const HOUR = 60 * MIN;
+		// 4 of 5 hours gone, 30% used: well within pace.
+		const session: ProviderState = { snapshot: { windows: [{ id: "session", label: "5h", usedPercent: 30, resetsAt: NOW + HOUR, windowMs: 5 * HOUR }] } };
+		expect(overviewView({ claude: session }, { agents: ["claude"] }, NOW).rows[0]).toEqual({ label: "Claude", value: "30%", fraction: 0.3, level: "normal", pace: 0.8 });
+		// No window length: no tick.
+		const unknown: ProviderState = { snapshot: { windows: [{ id: "session", label: "5h", usedPercent: 30, resetsAt: NOW + HOUR }] } };
+		expect(overviewView({ claude: unknown }, { agents: ["claude"] }, NOW).rows[0]).not.toHaveProperty("pace");
 	});
 
 	it("defaults to every agent", () => {

@@ -11,6 +11,8 @@ export type UsageWindow = {
 	usedPercent: number | undefined;
 	/** When the window resets, epoch ms. */
 	resetsAt?: number;
+	/** How long the window lasts, ms; with `resetsAt`, says how far through it we are. */
+	windowMs?: number;
 	/** Requests left, where the provider counts them (Copilot). */
 	remaining?: number;
 };

@@ -55,7 +55,8 @@ export function parseGrokBilling(json: GrokBillingJson, now: number): UsageWindo
 	if (used === undefined && start !== undefined && end !== undefined && start <= now && now < end) {
 		used = 0;
 	}
-	return used === undefined ? [] : [{ id: "credits", label, usedPercent: clampPercent(used), resetsAt: end }];
+	const windowMs = start !== undefined && end !== undefined && end > start ? end - start : undefined;
+	return used === undefined ? [] : [{ id: "credits", label, usedPercent: clampPercent(used), resetsAt: end, windowMs }];
 }
 
 /** The issuer entries `grok login` writes, preferred first. */

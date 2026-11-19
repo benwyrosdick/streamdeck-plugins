@@ -33,6 +33,20 @@ Every action works on keys and on Stream Deck + dials (press or tap the touch
 strip). Pressing an agent key steps through the windows your account has and
 saves the choice, so the key keeps showing it.
 
+Keys also mark how far through its time window a limit is: 80% of the way
+through a 5-hour session puts the mark 80% along. It's white while your usage
+stays behind it, and turns red once usage runs past it — on track to hit the
+limit before it resets.
+
+- **Overview**: a small tick on each row's bar.
+- **Ring**: a tick across the ring.
+- **Bars**: the bar the time has reached lights up (outlined when red, so it
+  still shows on a red key).
+
+With **Show** set to *Percent left*, the ring and bars show what's left, so
+the mark moves to the time left instead; red still means usage is ahead of
+the clock. The Classic, Neon and Solid styles don't show it.
+
 ### Settings
 
 | Setting | Notes |

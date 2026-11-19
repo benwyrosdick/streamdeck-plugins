@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { CLIENT_ID, type ClaudeCredentials, ClaudeProvider, type CredentialVault, parseClaudeUsage, TOKEN_URL, USAGE_URL } from "../src/providers/claude";
 import { CodexProvider, parseCodexUsage } from "../src/providers/codex";
-import { CopilotProvider, ghPaths, parseCopilotUsage } from "../src/providers/copilot";
+import { CopilotProvider, ghPaths, monthBefore, parseCopilotUsage } from "../src/providers/copilot";
 import { BILLING_URL, GrokProvider, parseGrokBilling, pickLogin, SETTINGS_URL } from "../src/providers/grok";
 import { retryAt, type Runner, windowLabel } from "../src/providers/http";
 import { ProviderError } from "../src/providers/types";
@@ -80,9 +80,9 @@ function claude(login: ClaudeCredentials | undefined, vault: CredentialVault, fe
 describe("Claude", () => {
 	it("parses the windows the plan has, in order", () => {
 		expect(parseClaudeUsage(usageBody)).toEqual([
-			{ id: "session", label: "5h", usedPercent: 42, resetsAt: Date.parse("2026-11-18T14:13:00Z") },
-			{ id: "weekly", label: "Week", usedPercent: 18.5, resetsAt: Date.parse("2026-11-21T00:00:00Z") },
-			{ id: "sonnet", label: "Sonnet", usedPercent: 3, resetsAt: undefined },
+			{ id: "session", label: "5h", usedPercent: 42, resetsAt: Date.parse("2026-11-18T14:13:00Z"), windowMs: 5 * HOUR },
+			{ id: "weekly", label: "Week", usedPercent: 18.5, resetsAt: Date.parse("2026-11-21T00:00:00Z"), windowMs: 7 * 24 * HOUR },
+			{ id: "sonnet", label: "Sonnet", usedPercent: 3, resetsAt: undefined, windowMs: 7 * 24 * HOUR },
 		]);
 		expect(parseClaudeUsage({ seven_day_oauth_apps: { utilization: 7 } })).toMatchObject([{ id: "weekly", usedPercent: 7 }]);
 	});
@@ -188,8 +188,8 @@ describe("Codex", () => {
 
 	it("parses both windows, naming them from their length", () => {
 		expect(parseCodexUsage(body)).toEqual([
-			{ id: "session", label: "5h", usedPercent: 15, resetsAt: 1_794_981_498_000 },
-			{ id: "weekly", label: "Week", usedPercent: 5, resetsAt: 1_795_568_298_000 },
+			{ id: "session", label: "5h", usedPercent: 15, resetsAt: 1_794_981_498_000, windowMs: 18_000_000 },
+			{ id: "weekly", label: "Week", usedPercent: 5, resetsAt: 1_795_568_298_000, windowMs: 604_800_000 },
 		]);
 		expect(parseCodexUsage({ rate_limit: { primary_window: null } })).toEqual([]);
 		expect(windowLabel(2_592_000, "x")).toBe("Month");
@@ -236,9 +236,16 @@ describe("Copilot", () => {
 
 	it("turns percent remaining into percent used, and marks unlimited quotas", () => {
 		expect(parseCopilotUsage(body)).toEqual([
-			{ id: "premium", label: "Premium", usedPercent: 35.5, resetsAt: reset, remaining: 967 },
-			{ id: "chat", label: "Chat", usedPercent: undefined, resetsAt: reset },
+			{ id: "premium", label: "Premium", usedPercent: 35.5, resetsAt: reset, windowMs: 30 * 24 * HOUR, remaining: 967 },
+			{ id: "chat", label: "Chat", usedPercent: undefined, resetsAt: reset, windowMs: 30 * 24 * HOUR },
 		]);
+	});
+
+	it("measures a monthly quota from the same day a month before the reset", () => {
+		// December 1st back to November 1st: 30 days. March 1st back to February 1st: 28 (2027 isn't a leap year).
+		expect(monthBefore(Date.parse("2026-12-01T00:00:00Z"))).toBe(30 * 24 * HOUR);
+		expect(monthBefore(Date.parse("2027-03-01T00:00:00Z"))).toBe(28 * 24 * HOUR);
+		expect(monthBefore(undefined)).toBeUndefined();
 	});
 
 	it("uses GH_TOKEN before asking gh", async () => {
@@ -282,7 +289,7 @@ describe("Grok", () => {
 	const login = (expires_at: string) => ({ "https://auth.x.ai::client": { key: "grok-token", expires_at, email: "x" } });
 
 	it("reads the credits window, naming it from the period", () => {
-		expect(parseGrokBilling(billing, NOW)).toEqual([{ id: "credits", label: "Week", usedPercent: 12.5, resetsAt: end }]);
+		expect(parseGrokBilling(billing, NOW)).toEqual([{ id: "credits", label: "Week", usedPercent: 12.5, resetsAt: end, windowMs: 7 * 24 * HOUR }]);
 		const monthly = { config: { billingPeriodStart: "2026-11-01T00:00:00Z", billingPeriodEnd: "2026-12-01T00:00:00Z", creditUsagePercent: 3 } };
 		expect(parseGrokBilling(monthly, NOW)[0].label).toBe("Month");
 	});
@@ -308,7 +315,7 @@ describe("Grok", () => {
 		});
 		const dir = home({ "auth.json": login("2026-11-18T15:00:00Z") });
 		const usage = await new GrokProvider({ env: { GROK_HOME: dir }, fetch: fetchImpl, now: () => NOW }).fetchUsage();
-		expect(usage).toEqual({ windows: [{ id: "credits", label: "Week", usedPercent: 12.5, resetsAt: end }], plan: "SuperGrok Heavy" });
+		expect(usage).toEqual({ windows: [{ id: "credits", label: "Week", usedPercent: 12.5, resetsAt: end, windowMs: 7 * 24 * HOUR }], plan: "SuperGrok Heavy" });
 		expect(fetchImpl.mock.calls[0][1]?.headers).toMatchObject({ Authorization: "Bearer grok-token", "x-xai-token-auth": "xai-grok-cli" });
 	});
 
