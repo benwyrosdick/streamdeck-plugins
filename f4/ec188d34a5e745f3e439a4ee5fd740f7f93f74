@@ -1,0 +1,59 @@
+agent-usage/src/actions/agent-key.ts
+  s_ac87241640308a::t_a2ceb39b3d393a 62-66
+agent-usage/src/providers/types.ts
+  s_ac87241640308a::t_a2ceb39b3d393a 2
+agent-usage/test/views.test.ts
+  s_ac87241640308a::t_e03860e4cf3078 225
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/en.json
+  s_ac87241640308a::t_643e7827b11912 3,17-19
+  s_ac87241640308a::t_708a07b2cdd6ef 20
+agent-usage/README.md
+  s_ac87241640308a::t_cb14c4b60f7602 7-8,29,68,83,87-88,117-125,141-142,179
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/ui/overview.html
+  s_ac87241640308a::t_643e7827b11912 19
+agent-usage/package.json
+  s_ac87241640308a::t_643e7827b11912 5
+agent-usage/src/providers/cursor.ts
+  s_ac87241640308a::t_a2ceb39b3d393a 1,14,104,132,142-144
+  s_ac87241640308a::t_5cba91d4d3fe24 2-13,15-103,105-131,133-141,145-172
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/cursor/icon.svg
+  s_ac87241640308a::t_643e7827b11912 1
+README.md
+  s_ac87241640308a::t_cb14c4b60f7602 10
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/ui/cursor.html
+  s_ac87241640308a::t_643e7827b11912 1-82
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/overview/key.svg
+  s_ac87241640308a::t_643e7827b11912 1
+agent-usage/test/providers.test.ts
+  s_ac87241640308a::t_ae9cd9b9263bb0 10,363-444
+  s_ac87241640308a::t_ad8cf3b5c08481 445
+agent-usage/scripts/generate-images.ts
+  s_ac87241640308a::t_643e7827b11912 27,52-54,89,99,153
+agent-usage/src/plugin.ts
+  s_ac87241640308a::t_a2ceb39b3d393a 4,9,35,55
+agent-usage/src/store.ts
+  s_ac87241640308a::t_a2ceb39b3d393a 11
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/manifest.json
+  s_ac87241640308a::t_643e7827b11912 83-106,161
+  s_ac87241640308a::t_a8c923d3655702 82
+agent-usage/src/views.ts
+  s_ac87241640308a::t_a2ceb39b3d393a 43,63-66,95
+agent-usage/com.benwyrosdick.agent-usage.sdPlugin/imgs/actions/cursor/key.svg
+  s_ac87241640308a::t_643e7827b11912 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f4ec188d34a5e745f3e439a4ee5fd740f7f93f74",
+  "prompts": {},
+  "sessions": {
+    "s_ac87241640308a": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1ea2b-bf80-748f-a9ce-aaa998e5f0c3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
