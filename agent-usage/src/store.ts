@@ -8,7 +8,7 @@ export const HISTORY_LENGTH = 40;
  * endpoint rate-limits readily, so Claude gets the same 5 minutes as
  * Copilot (whose quota is monthly anyway).
  */
-export const POLL_MS: Record<ProviderId, number> = { claude: 300_000, codex: 120_000, copilot: 300_000, grok: 120_000 };
+export const POLL_MS: Record<ProviderId, number> = { claude: 300_000, codex: 120_000, copilot: 300_000, cursor: 300_000, grok: 120_000 };
 
 /** After a 429 without a Retry-After, wait this long before asking again. */
 export const RATE_LIMIT_BACKOFF_MS = 600_000;

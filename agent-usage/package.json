@@ -2,7 +2,7 @@
     "name": "streamdeck-agent-usage",
     "version": "1.0.0",
     "private": true,
-    "description": "Claude Code, Codex, GitHub Copilot and Grok plan usage on your Stream Deck.",
+    "description": "Claude Code, Codex, GitHub Copilot, Cursor and Grok plan usage on your Stream Deck.",
     "license": "MIT",
     "author": "Ben Wyrosdick",
     "scripts": {

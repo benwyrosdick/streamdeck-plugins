@@ -1,6 +1,6 @@
 {
 	"Name": "Agent Usage",
-	"Description": "Claude Code, Codex, GitHub Copilot and Grok plan usage on your Stream Deck: session, weekly and monthly limits with reset countdowns and warning colors.",
+	"Description": "Claude Code, Codex, GitHub Copilot, Cursor and Grok plan usage on your Stream Deck: session, weekly and monthly limits with reset countdowns and warning colors.",
 	"Category": "Agent Usage",
 	"com.benwyrosdick.agent-usage.claude": {
 		"Name": "Claude Code",
@@ -13,6 +13,10 @@
 	"com.benwyrosdick.agent-usage.copilot": {
 		"Name": "GitHub Copilot",
 		"Tooltip": "GitHub Copilot's monthly premium requests. Press to step through the quotas."
+	},
+	"com.benwyrosdick.agent-usage.cursor": {
+		"Name": "Cursor",
+		"Tooltip": "Cursor plan usage: the weekly included-usage pool, or the monthly plan. Press to step through them."
 	},
 	"com.benwyrosdick.agent-usage.grok": {
 		"Name": "Grok",

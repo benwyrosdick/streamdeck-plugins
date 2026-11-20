@@ -24,7 +24,7 @@ function write(file: string, contents: string): void {
 	writeFileSync(target, contents + "\n");
 }
 
-type Glyph = "claude" | "codex" | "copilot" | "grok" | "overview" | "gauge";
+type Glyph = "claude" | "codex" | "copilot" | "cursor" | "grok" | "overview" | "gauge";
 
 /** Monochrome line icons on a 256×256 grid (generic marks, not the vendors' logos). */
 function glyphShapes(glyph: Glyph, color: string): string {
@@ -49,6 +49,9 @@ function glyphShapes(glyph: Glyph, color: string): string {
 				`<rect x="140" y="76" width="80" height="64" rx="28" ${stroke(18)}/>`,
 				`<path d="M116 104H140M56 168Q128 220 200 168" ${stroke(18)}/>`,
 			].join("");
+		case "cursor":
+			// A pointer arrow.
+			return `<path d="M64 36L196 136L138 146L170 214L142 226L110 158L64 196Z" ${stroke(18)}/>`;
 		case "grok":
 			// A ring cut by a diagonal stroke.
 			return [`<path d="M184 72A80 80 0 1 0 200 160" ${stroke(20)}/>`, `<path d="M72 200L208 48" ${stroke(20)}/>`].join("");
@@ -83,6 +86,7 @@ const actions: Record<string, { glyph: Glyph; key: View }> = {
 	claude: { glyph: "claude", key: gauge({ title: "Claude 5h", value: "42%", detail: "2h 13m", fraction: 0.42, pace: { at: 0.56, ahead: false } }) },
 	codex: { glyph: "codex", key: gauge({ title: "Codex 5h", value: "18%", detail: "3h 40m", fraction: 0.18, pace: { at: 0.27, ahead: false } }) },
 	copilot: { glyph: "copilot", key: gauge({ title: "Copilot", value: "35%", detail: "12d 4h", fraction: 0.35 }) },
+	cursor: { glyph: "cursor", key: gauge({ title: "Cursor Week", value: "8%", detail: "3d 2h", fraction: 0.08, pace: { at: 0.55, ahead: false } }) },
 	grok: { glyph: "grok", key: gauge({ title: "Grok Week", value: "12%", detail: "5d 19h", fraction: 0.12 }) },
 	overview: {
 		glyph: "overview",
@@ -92,6 +96,7 @@ const actions: Record<string, { glyph: Glyph; key: View }> = {
 				{ label: "Claude", value: "42%", fraction: 0.42, level: "normal", pace: 0.7 },
 				{ label: "Codex", value: "76%", fraction: 0.76, level: "warning", pace: 0.55 },
 				{ label: "Copilot", value: "35%", fraction: 0.35, level: "normal", pace: 0.6 },
+				{ label: "Cursor", value: "8%", fraction: 0.08, level: "normal", pace: 0.55 },
 				{ label: "Grok", value: "12%", fraction: 0.12, level: "normal", pace: 0.3 },
 			],
 		},
@@ -145,7 +150,7 @@ png(
 		`<defs><linearGradient id="thumb-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#151a2e"/><stop offset="1" stop-color="#090c14"/></linearGradient></defs>`,
 		`<rect width="1000" height="360" fill="url(#thumb-bg)"/>`,
 		`<text x="56" y="176" fill="#f8fafc" font-family="'Noto Sans', 'Segoe UI', Helvetica, Arial, sans-serif" font-size="56" font-weight="700">Agent Usage</text>`,
-		`<text x="58" y="226" fill="#94a3b8" font-family="'Noto Sans', 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">Claude Code, Codex, Copilot &amp; Grok limits</text>`,
+		`<text x="58" y="226" fill="#94a3b8" font-family="'Noto Sans', 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">Claude, Codex, Copilot, Cursor &amp; Grok limits</text>`,
 		keys,
 		"</svg>",
 	].join(""),

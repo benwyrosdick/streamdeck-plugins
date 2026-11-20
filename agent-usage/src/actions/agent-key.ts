@@ -59,3 +59,8 @@ export class CopilotUsage extends AgentKey {
 export class GrokUsage extends AgentKey {
 	protected override readonly provider = "grok";
 }
+
+@action({ UUID: "com.benwyrosdick.agent-usage.cursor" })
+export class CursorUsage extends AgentKey {
+	protected override readonly provider = "cursor";
+}

@@ -40,6 +40,7 @@ export const AGENTS: Record<ProviderId, { name: string; /** What fixes a missing
 	claude: { name: "Claude", fix: "run Claude Code" },
 	codex: { name: "Codex", fix: "run codex" },
 	copilot: { name: "Copilot", fix: "gh auth login" },
+	cursor: { name: "Cursor", fix: "cursor-agent login" },
 	grok: { name: "Grok", fix: "run grok" },
 };
 
@@ -58,6 +59,10 @@ export const WINDOWS: Record<ProviderId, { id: string; name: string }[]> = {
 	copilot: [
 		{ id: "premium", name: "Premium requests (monthly)" },
 		{ id: "chat", name: "Chat (monthly)" },
+	],
+	cursor: [
+		{ id: "weekly", name: "Weekly included usage" },
+		{ id: "monthly", name: "Monthly plan" },
 	],
 	grok: [{ id: "credits", name: "Credits (weekly)" }],
 };
@@ -87,7 +92,7 @@ export function windowChoices(id: ProviderId, windows: UsageWindow[] | undefined
 
 export const DEFAULT_WARN = 70;
 export const DEFAULT_CRIT = 90;
-export const DEFAULT_AGENTS: ProviderId[] = ["claude", "codex", "copilot", "grok"];
+export const DEFAULT_AGENTS: ProviderId[] = ["claude", "codex", "copilot", "cursor", "grok"];
 
 /** Starting settings for an agent key; thresholds are strings to match the inspector's selects. */
 export const AGENT_DEFAULTS = {

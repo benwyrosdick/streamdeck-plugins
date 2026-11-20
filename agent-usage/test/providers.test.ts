@@ -7,6 +7,7 @@ import { describe, expect, it, vi } from "vitest";
 import { CLIENT_ID, type ClaudeCredentials, ClaudeProvider, type CredentialVault, modelWindowId, parseClaudeUsage, TOKEN_URL, USAGE_URL } from "../src/providers/claude";
 import { CodexProvider, parseCodexUsage } from "../src/providers/codex";
 import { CopilotProvider, ghPaths, monthBefore, parseCopilotUsage } from "../src/providers/copilot";
+import { CursorProvider, parseCursorUsage, parseSecret, planName, STATUS_URL, SUMMARY_URL } from "../src/providers/cursor";
 import { BILLING_URL, GrokProvider, parseGrokBilling, pickLogin, SETTINGS_URL } from "../src/providers/grok";
 import { retryAt, type Runner, windowLabel } from "../src/providers/http";
 import { ProviderError } from "../src/providers/types";
@@ -357,5 +358,88 @@ describe("Grok", () => {
 		const expired = home({ "auth.json": login("2026-11-18T11:00:00Z") });
 		expect(await kind(new GrokProvider({ env: { GROK_HOME: expired }, fetch: fetchImpl, now: () => NOW }).fetchUsage())).toBe("expired");
 		expect(fetchImpl).not.toHaveBeenCalled();
+	});
+});
+
+// ---------------------------------------------------------------------- //
+// Cursor
+// ---------------------------------------------------------------------- //
+
+describe("Cursor", () => {
+	// A JWT shaped like the CLI's: only the payload matters here.
+	const jwt = (claims: Record<string, unknown>) => `h.${Buffer.from(JSON.stringify(claims)).toString("base64url")}.s`;
+	const token = jwt({ sub: "google-oauth2|user_123", exp: NOW / 1000 + 3600 });
+	const summary = {
+		billingCycleStart: "2026-11-01T00:00:00.000Z",
+		billingCycleEnd: "2026-12-01T00:00:00.000Z",
+		membershipType: "unified_ultra",
+		individualUsage: { plan: { used: 0, limit: 55395, totalPercentUsed: 0 } },
+	};
+	const status = { weeklyIncludedUsage: { usedCents: 469, budgetCents: 55395, periodStart: "2026-11-16T20:52:34.684Z", resetsAt: "2026-11-23T20:52:34.684Z" } };
+
+	it("reads the weekly pool, leaving out the monthly figure on unified plans", () => {
+		expect(parseCursorUsage(summary, status)).toEqual([
+			{ id: "weekly", label: "Week", usedPercent: (469 / 55395) * 100, resetsAt: Date.parse("2026-11-23T20:52:34.684Z"), windowMs: 7 * 24 * HOUR },
+		]);
+	});
+
+	it("shows the monthly plan on other plans, or when there's no weekly pool", () => {
+		const pro = { ...summary, membershipType: "pro", individualUsage: { plan: { used: 250, limit: 500 } } };
+		expect(parseCursorUsage(pro, status).map((w) => [w.id, w.usedPercent])).toEqual([
+			["weekly", (469 / 55395) * 100],
+			["monthly", 50],
+		]);
+		expect(parseCursorUsage(summary, undefined)).toEqual([
+			{ id: "monthly", label: "Month", usedPercent: 0, resetsAt: Date.parse("2026-12-01T00:00:00Z"), windowMs: 30 * 24 * HOUR },
+		]);
+		expect(parseCursorUsage({}, {})).toEqual([]);
+	});
+
+	it("names plans and reads the secret store's value", () => {
+		expect(planName("unified_ultra")).toBe("Ultra");
+		expect(planName("pro_plus")).toBe("Pro Plus");
+		expect(parseSecret(JSON.stringify({ accessToken: "a.b.c", refreshToken: "r" }))).toBe("a.b.c");
+		expect(parseSecret("a.b.c\n")).toBe("a.b.c");
+		expect(parseSecret("")).toBeUndefined();
+		expect(parseSecret("not a token")).toBeUndefined();
+	});
+
+	const provider = (deps: Partial<ConstructorParameters<typeof CursorProvider>[0]> & { run?: Runner } = {}) =>
+		new CursorProvider({ platform: "linux", env: { HOME: home({}) }, run: noRun, exists: () => false, now: () => NOW, ...deps });
+
+	it("finds the login in the Linux keyring, the macOS Keychain, or an older auth.json", async () => {
+		const secret = JSON.stringify({ accessToken: token, refreshToken: "r" });
+		const linux = vi.fn<Runner>(async () => ({ ok: true, stdout: secret }));
+		expect(await provider({ run: linux, exists: (f) => f === "/usr/bin/secret-tool" }).readToken()).toBe(token);
+		expect(linux).toHaveBeenCalledWith("/usr/bin/secret-tool", ["lookup", "account", "cursor-user"]);
+
+		const mac = vi.fn<Runner>(async () => ({ ok: true, stdout: secret }));
+		expect(await provider({ platform: "darwin", run: mac }).readToken()).toBe(token);
+		expect(mac).toHaveBeenCalledWith("/usr/bin/security", ["find-generic-password", "-a", "cursor-user", "-w"]);
+
+		const legacy = home({ ".config/cursor/auth.json": { accessToken: token } });
+		expect(await provider({ env: { HOME: legacy } }).readToken()).toBe(token);
+	});
+
+	it("sends the login as cursor.com's session cookie and reads both endpoints", async () => {
+		const fetchImpl = fakeFetch({ [SUMMARY_URL]: () => ({ body: summary }), [STATUS_URL]: () => ({ body: status }) });
+		const usage = await provider({ fetch: fetchImpl, run: async () => ({ ok: true, stdout: JSON.stringify({ accessToken: token }) }) }).fetchUsage();
+		expect(usage.plan).toBe("Ultra");
+		expect(usage.windows.map((w) => w.id)).toEqual(["weekly"]);
+		expect(fetchImpl.mock.calls[0][1]?.headers).toEqual({ Cookie: `WorkosCursorSessionToken=user_123%3A%3A${token}` });
+	});
+
+	it("still reports the monthly plan if the weekly endpoint fails", async () => {
+		const fetchImpl = fakeFetch({ [SUMMARY_URL]: () => ({ body: summary }), [STATUS_URL]: () => ({ status: 500, body: {} }) });
+		const usage = await provider({ fetch: fetchImpl, run: async () => ({ ok: true, stdout: token }) }).fetchUsage();
+		expect(usage.windows.map((w) => w.id)).toEqual(["monthly"]);
+	});
+
+	it("reports signed out, expired and rejected logins", async () => {
+		const fetchImpl = fakeFetch({ [SUMMARY_URL]: () => ({ status: 401, body: {} }), [STATUS_URL]: () => ({ status: 401, body: {} }) });
+		expect(await kind(provider({ fetch: fetchImpl }).fetchUsage())).toBe("signedOut");
+		const old = jwt({ sub: "auth0|u", exp: NOW / 1000 - 60 });
+		expect(await kind(provider({ fetch: fetchImpl, run: async () => ({ ok: true, stdout: old }) }).fetchUsage())).toBe("expired");
+		expect(await kind(provider({ fetch: fetchImpl, run: async () => ({ ok: true, stdout: token }) }).fetchUsage())).toBe("expired");
 	});
 });

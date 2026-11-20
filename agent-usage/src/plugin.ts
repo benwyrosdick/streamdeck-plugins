@@ -1,11 +1,12 @@
 import streamDeck from "@elgato/streamdeck";
 import type { JsonObject } from "@elgato/utils";
 
-import { ClaudeUsage, CodexUsage, CopilotUsage, GrokUsage } from "./actions/agent-key";
+import { ClaudeUsage, CodexUsage, CopilotUsage, CursorUsage, GrokUsage } from "./actions/agent-key";
 import { Overview } from "./actions/overview";
 import { type ClaudeCredentials, ClaudeProvider, type CredentialVault } from "./providers/claude";
 import { CodexProvider } from "./providers/codex";
 import { CopilotProvider } from "./providers/copilot";
+import { CursorProvider } from "./providers/cursor";
 import { GrokProvider } from "./providers/grok";
 import { run } from "./providers/http";
 import { UsageStore } from "./store";
@@ -31,7 +32,7 @@ const vault: CredentialVault = {
 	},
 };
 
-const store = new UsageStore([new ClaudeProvider({ run, vault }), new CodexProvider(), new CopilotProvider({ run }), new GrokProvider()]);
+const store = new UsageStore([new ClaudeProvider({ run, vault }), new CodexProvider(), new CopilotProvider({ run }), new CursorProvider({ run }), new GrokProvider()]);
 
 streamDeck.settings.onDidReceiveGlobalSettings<JsonObject>(async (ev) => {
 	const next = ev.settings as GlobalSettings;
@@ -51,6 +52,7 @@ streamDeck.settings.onDidReceiveGlobalSettings<JsonObject>(async (ev) => {
 streamDeck.actions.registerAction(new ClaudeUsage(store));
 streamDeck.actions.registerAction(new CodexUsage(store));
 streamDeck.actions.registerAction(new CopilotUsage(store));
+streamDeck.actions.registerAction(new CursorUsage(store));
 streamDeck.actions.registerAction(new GrokUsage(store));
 streamDeck.actions.registerAction(new Overview(store));
 

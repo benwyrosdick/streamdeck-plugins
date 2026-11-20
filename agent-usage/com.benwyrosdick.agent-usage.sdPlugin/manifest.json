@@ -80,6 +80,31 @@
 			"SupportedInMultiActions": false
 		},
 		{
+			"Name": "Cursor",
+			"UUID": "com.benwyrosdick.agent-usage.cursor",
+			"Icon": "imgs/actions/cursor/icon",
+			"Tooltip": "Cursor plan usage: the weekly included-usage pool, or the monthly plan. Press to step through them.",
+			"PropertyInspectorPath": "ui/cursor.html",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Push": "Next window",
+					"Touch": "Next window"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/cursor/key",
+					"ShowTitle": false
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
 			"Name": "Grok",
 			"UUID": "com.benwyrosdick.agent-usage.grok",
 			"Icon": "imgs/actions/grok/icon",
@@ -133,7 +158,7 @@
 	"Category": "Agent Usage",
 	"CategoryIcon": "imgs/plugin/category-icon",
 	"CodePath": "bin/plugin.js",
-	"Description": "Claude Code, Codex, GitHub Copilot and Grok plan usage on your Stream Deck: session, weekly and monthly limits with reset countdowns and warning colors.",
+	"Description": "Claude Code, Codex, GitHub Copilot, Cursor and Grok plan usage on your Stream Deck: session, weekly and monthly limits with reset countdowns and warning colors.",
 	"Icon": "imgs/plugin/marketplace",
 	"URL": "https://github.com/benwyrosdick/streamdeck-plugins",
 	"SDKVersion": 3,

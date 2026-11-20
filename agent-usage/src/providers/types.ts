@@ -1,5 +1,5 @@
 /** The agents the plugin reads plan usage for. */
-export type ProviderId = "claude" | "codex" | "copilot" | "grok";
+export type ProviderId = "claude" | "codex" | "copilot" | "cursor" | "grok";
 
 /** One rate-limit window, e.g. Claude's 5-hour session or Copilot's monthly premium requests. */
 export type UsageWindow = {

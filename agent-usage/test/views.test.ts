@@ -222,7 +222,7 @@ describe("overviewView", () => {
 	});
 
 	it("defaults to every agent", () => {
-		expect(overviewAgents({})).toEqual(["claude", "codex", "copilot", "grok"]);
+		expect(overviewAgents({})).toEqual(["claude", "codex", "copilot", "cursor", "grok"]);
 		expect(overviewAgents({ agents: [] })).toEqual([]);
 	});
 });
