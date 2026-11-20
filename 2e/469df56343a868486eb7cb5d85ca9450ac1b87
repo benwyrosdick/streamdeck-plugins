@@ -1,0 +1,24 @@
+tailscale/test/toggle-connection.test.ts
+  s_ac87241640308a::t_a91469ec5306d0 88-126
+tailscale/src/actions/toggle-connection.ts
+  s_ac87241640308a::t_c2509cd8d4dcd0 4,35-69,76
+tailscale/src/tailscale/status.ts
+  s_ac87241640308a::t_c2509cd8d4dcd0 18-19,66-72
+  s_ac87241640308a::t_5a5764d2d64d36 73-74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2e469df56343a868486eb7cb5d85ca9450ac1b87",
+  "prompts": {},
+  "sessions": {
+    "s_ac87241640308a": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1ea2b-bf80-748f-a9ce-aaa998e5f0c3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
