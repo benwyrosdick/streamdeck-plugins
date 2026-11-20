@@ -15,7 +15,8 @@ export type TailscalePeer = {
 /** The subset of the `tailscale status --json` payload the plugin reads. */
 export type TailscaleStatus = {
 	BackendState?: string;
-	CurrentTailnet?: { Name?: string } | null;
+	CurrentTailnet?: { Name?: string; StableID?: string } | null;
+	Self?: { UserID?: number } | null;
 	Peer?: Record<string, TailscalePeer> | null;
 };
 
@@ -60,6 +61,15 @@ export function isConnected(status: TailscaleStatus | null | undefined): boolean
 /** The current tailnet name; this is also the key per-account settings use. */
 export function currentAccount(status: TailscaleStatus | null | undefined): string | undefined {
 	return status?.CurrentTailnet?.Name || undefined;
+}
+
+/**
+ * What identifies the signed-in account in a status: its tailnet and user.
+ * When this changes, a different account (profile) has become current.
+ */
+export function accountSignature(status: TailscaleStatus | null | undefined): string | undefined {
+	const tailnet = status?.CurrentTailnet?.StableID || status?.CurrentTailnet?.Name;
+	return tailnet ? `${tailnet}/${status?.Self?.UserID ?? ""}` : undefined;
 }
 
 /** The peer currently acting as exit node, if any. */

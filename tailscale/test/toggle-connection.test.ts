@@ -85,6 +85,45 @@ describe("ToggleConnection view", () => {
 	});
 });
 
+describe("ToggleConnection matches accounts by profile, not by name", () => {
+	// What Tailscale actually reports: the list shows the tailnet's display name, status its domain.
+	const vesylKey: ToggleConnectionSettings = { profile: "a1", tailnet: "VESYL" };
+	const connected = (tailnet: string, id: string, user = 1): TailscaleStatus => ({
+		BackendState: "Running",
+		CurrentTailnet: { Name: tailnet, StableID: id },
+		Self: { UserID: user },
+	});
+	const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+	type WithRender = Hooks & { renderAll(status: TailscaleStatus | undefined): void };
+
+	it("lights up when its profile is current, even though the names differ", async () => {
+		const tailscale = fakeTailscale({ initial: connected("vesyl.com", "T1"), current: "a1" });
+		const action = hooks(tailscale) as WithRender;
+		action.renderAll(connected("vesyl.com", "T1"));
+		await flush();
+		expect(action.view(connected("vesyl.com", "T1"), vesylKey)).toMatchObject({ icon: "connected", label: "VESYL" });
+		// The other account's key stays dark.
+		expect(action.view(connected("vesyl.com", "T1"), betaKey)).toMatchObject({ icon: "disconnected", label: "beta.org" });
+	});
+
+	it("re-reads the current profile only when the account changes", async () => {
+		const tailscale = fakeTailscale({ initial: connected("vesyl.com", "T1"), current: "a1" });
+		const action = hooks(tailscale) as WithRender;
+		action.renderAll(connected("vesyl.com", "T1"));
+		action.renderAll(connected("vesyl.com", "T1"));
+		await flush();
+		expect(tailscale.cli.listProfiles).toHaveBeenCalledTimes(1);
+		action.renderAll(connected("beta.org", "T2"));
+		await flush();
+		expect(tailscale.cli.listProfiles).toHaveBeenCalledTimes(2);
+	});
+
+	it("falls back to comparing names, ignoring case, until the profile is known", () => {
+		const action = hooks(fakeTailscale({ initial: connected("vesyl", "T1") }));
+		expect(action.view(connected("vesyl", "T1"), vesylKey)).toMatchObject({ icon: "connected" });
+	});
+});
+
 describe("ToggleConnection press", () => {
 	it("toggles the last used account when no account is set", async () => {
 		const connected = fakeTailscale({ initial: on("alpha.com") });

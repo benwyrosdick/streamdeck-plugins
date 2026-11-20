@@ -1,7 +1,7 @@
 import streamDeck, { type Action, action } from "@elgato/streamdeck";
 
 import type { View } from "../render";
-import { backendState, currentAccount, isConnected, type TailscaleStatus } from "../tailscale/status";
+import { accountSignature, backendState, currentAccount, isConnected, type TailscaleStatus } from "../tailscale/status";
 import { type DataSourceItem, profileItems, TailscaleAction, tailnetLookup, truncate } from "./tailscale-action";
 
 export type ToggleConnectionSettings = {
@@ -32,13 +32,48 @@ const SWITCH_POLL_MS = 250;
  */
 @action({ UUID: "com.benwyrosdick.tailscale.toggle-connection" })
 export class ToggleConnection extends TailscaleAction<ToggleConnectionSettings> {
+	/**
+	 * The current account's profile id, from `tailscale switch --list`. Keys
+	 * match on this rather than on names: the list can show a tailnet's display
+	 * name ("VESYL") where `tailscale status` shows its domain ("vesyl.com").
+	 */
+	#currentProfile: string | undefined;
+	/** The account signature the profile id was read for; re-read when it changes. */
+	#profileFor: string | undefined;
+
+	protected override renderAll(status: TailscaleStatus | undefined): void {
+		const signature = accountSignature(status);
+		if (signature !== this.#profileFor) {
+			this.#profileFor = signature;
+			void this.#refreshCurrentProfile(signature);
+		}
+		super.renderAll(status);
+	}
+
+	async #refreshCurrentProfile(signature: string | undefined): Promise<void> {
+		const current = (await this.tailscale.cli.listProfiles())?.find((p) => p.current)?.id;
+		// Ignore an answer that arrives after the account changed again.
+		if (signature === this.#profileFor && current !== this.#currentProfile) {
+			this.#currentProfile = current;
+			super.renderAll(this.tailscale.status.current);
+		}
+	}
+
+	/** Is this key's account the current one? By profile id when known, else by tailnet name. */
+	#isOwn(status: TailscaleStatus, settings: ToggleConnectionSettings): boolean {
+		if (!settings.profile) return true;
+		if (this.#currentProfile !== undefined) return settings.profile === this.#currentProfile;
+		const current = currentAccount(status);
+		return !!settings.tailnet && !!current && settings.tailnet.toLowerCase() === current.toLowerCase();
+	}
+
 	protected override view(status: TailscaleStatus | undefined, settings: ToggleConnectionSettings): View {
 		if (!status) {
 			return { icon: "disconnected", background: "#787878", error: true };
 		}
 
 		const current = currentAccount(status);
-		const own = !settings.profile || (!!settings.tailnet && settings.tailnet === current);
+		const own = this.#isOwn(status, settings);
 		// The account name persists across states; only icon/background change.
 		const label = truncate(settings.profile ? settings.tailnet : current);
 		if (!own) {
