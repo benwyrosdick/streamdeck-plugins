@@ -1,0 +1,28 @@
+tailscale/test/cli.test.ts
+  s_ac87241640308a::t_604ff464d06dc2 81-90
+tailscale/test/toggle-connection.test.ts
+  s_ac87241640308a::t_604ff464d06dc2 16,212-215
+  s_ac87241640308a::t_b00506b58cc558 216-217
+tailscale/com.benwyrosdick.tailscale.sdPlugin/en.json
+  s_ac87241640308a::t_ce5acc2f244f16 27-28
+tailscale/src/actions/tailscale-action.ts
+  s_ac87241640308a::t_ce5acc2f244f16 208-211,216-217
+tailscale/src/tailscale/cli.ts
+  s_ac87241640308a::t_ce5acc2f244f16 64,115,117,122-123,129-137,173-174
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c247112dbef2ce5d5c7acc3ca726875bd92bc58f",
+  "prompts": {},
+  "sessions": {
+    "s_ac87241640308a": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1ea2b-bf80-748f-a9ce-aaa998e5f0c3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Ben Wyrosdick <ben.wyrosdick@gmail.com>"
+    }
+  }
+}
