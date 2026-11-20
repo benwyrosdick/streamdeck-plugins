@@ -59,6 +59,20 @@ describe("getStatus", () => {
 });
 
 describe("listProfiles", () => {
+	it("prefers the JSON list, which keeps tailnet names with spaces intact", async () => {
+		const json = JSON.stringify([
+			{ id: "f367", nickname: "me@vesyl.com", tailnet: "VESYL", account: "me@vesyl.com", selected: true },
+			{ id: "c9d1", nickname: "CloudPrint", tailnet: "VESYL CloudPrint", account: "me@vesyl.com", selected: false },
+		]);
+		const { cli: c, calls } = cli({ stdout: json });
+		expect(await c.listProfiles()).toEqual([
+			{ id: "f367", tailnet: "VESYL", account: "me@vesyl.com", current: true, nickname: "me@vesyl.com" },
+			{ id: "c9d1", tailnet: "VESYL CloudPrint", account: "me@vesyl.com", current: false, nickname: "CloudPrint" },
+		]);
+		expect(calls).toHaveLength(1);
+		expect(calls[0].args).toEqual(["switch", "--list", "--json"]);
+	});
+
 	it("parses profiles", async () => {
 		const { cli: c } = cli({ stdout: "ID Tailnet Account\nabc a.com alice *\n" });
 		expect(await c.listProfiles()).toEqual([{ id: "abc", tailnet: "a.com", account: "alice", current: true }]);

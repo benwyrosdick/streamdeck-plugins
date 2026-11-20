@@ -2,7 +2,7 @@ import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
-import { parseProfiles, type Profile, type TailscaleStatus } from "./status";
+import { parseProfiles, parseProfilesJson, type Profile, type TailscaleStatus } from "./status";
 
 /**
  * Thin wrapper around the local `tailscale` CLI.
@@ -110,6 +110,12 @@ export class TailscaleCli {
 	 * of an empty picker.
 	 */
 	async listProfiles(): Promise<Profile[] | undefined> {
+		const json = await this.run(["switch", "--list", "--json"]);
+		const fromJson = json.ok ? parseProfilesJson(json.stdout) : undefined;
+		if (fromJson) {
+			return fromJson;
+		}
+		// Older Tailscale: only the table.
 		const { ok, stdout, stderr } = await this.run(["switch", "--list"]);
 		if (!ok || stderr.toLowerCase().includes("access denied")) {
 			return undefined;

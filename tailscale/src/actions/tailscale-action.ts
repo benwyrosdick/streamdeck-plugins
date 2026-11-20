@@ -212,7 +212,21 @@ export async function profileItems(cli: Pick<TailscaleCli, "listProfiles">, firs
 		const value = first.length ? "unavailable" : "";
 		return [...first, { value, label: streamDeck.i18n.translate("SwitchAccount.Unavailable"), disabled: true }];
 	}
-	return [...first, ...profiles.map((p) => ({ value: p.id, label: p.account || p.tailnet || p.id }))];
+	return [...first, ...profiles.map((p) => ({ value: p.id, label: profileLabel(p) }))];
+}
+
+/**
+ * How an account reads in a picker: its tailnet and the sign-in, since one
+ * sign-in can belong to several tailnets ("VESYL (me@vesyl.com)",
+ * "VESYL CloudPrint (me@vesyl.com)"). A personal tailnet named after the
+ * account is shown once.
+ */
+export function profileLabel(profile: Profile): string {
+	const { tailnet, account, id, nickname } = profile;
+	// A nickname you chose (`tailscale login --nickname`) beats the tailnet name.
+	const name = nickname && nickname !== account ? nickname : tailnet;
+	if (name && account && name !== account) return `${name} (${account})`;
+	return account || name || id;
 }
 
 /** Maps a profile id to its tailnet: the name `tailscale status` reports while that account is active. */

@@ -13,7 +13,7 @@ vi.mock("@elgato/streamdeck", () => ({
 
 import streamDeck from "@elgato/streamdeck";
 
-import type { Tailscale } from "../src/actions/tailscale-action";
+import { profileLabel, type Tailscale } from "../src/actions/tailscale-action";
 import { ToggleConnection, type ToggleConnectionSettings } from "../src/actions/toggle-connection";
 import type { Profile, TailscaleStatus } from "../src/tailscale/status";
 
@@ -175,6 +175,26 @@ describe("ToggleConnection press", () => {
 	});
 });
 
+describe("profileLabel", () => {
+	it("tells apart tailnets reached with the same sign-in", () => {
+		expect(profileLabel({ id: "f367", tailnet: "VESYL", account: "me@vesyl.com", current: true })).toBe("VESYL (me@vesyl.com)");
+		expect(profileLabel({ id: "c9d1", tailnet: "VESYL CloudPrint", account: "me@vesyl.com", current: false })).toBe("VESYL CloudPrint (me@vesyl.com)");
+	});
+
+	it("prefers a nickname you set over the tailnet name", () => {
+		expect(profileLabel({ id: "c9d1", tailnet: "VESYL CloudPrint", account: "me@vesyl.com", current: false, nickname: "Printers" })).toBe(
+			"Printers (me@vesyl.com)",
+		);
+		// The default nickname is just the account, so it doesn't count.
+		expect(profileLabel({ id: "f367", tailnet: "VESYL", account: "me@vesyl.com", current: true, nickname: "me@vesyl.com" })).toBe("VESYL (me@vesyl.com)");
+	});
+
+	it("shows a personal tailnet named after the account once", () => {
+		expect(profileLabel({ id: "73ab", tailnet: "me@gmail.com", account: "me@gmail.com", current: false })).toBe("me@gmail.com");
+		expect(profileLabel({ id: "x1", tailnet: "", account: "", current: false })).toBe("x1");
+	});
+});
+
 describe("ToggleConnection settings", () => {
 	it("stores the picked account's tailnet, and clears it for last used", async () => {
 		const action = hooks(fakeTailscale({ initial: on("alpha.com") }));
@@ -195,8 +215,8 @@ describe("ToggleConnection settings", () => {
 			event: "getProfiles",
 			items: [
 				{ value: "", label: "ToggleConnection.LastUsed" },
-				{ value: "a1", label: "me@alpha.com" },
-				{ value: "b2", label: "me@beta.org" },
+				{ value: "a1", label: "alpha.com (me@alpha.com)" },
+				{ value: "b2", label: "beta.org (me@beta.org)" },
 			],
 		});
 	});
