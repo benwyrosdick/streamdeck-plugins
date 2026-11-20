@@ -2,8 +2,8 @@ import { type Action, action } from "@elgato/streamdeck";
 
 import type { ProviderId } from "../providers/types";
 import type { View } from "../render";
-import { AGENT_DEFAULTS, type AgentSettings, agentView, selectWindow } from "../views";
-import { KeyAction } from "./key-action";
+import { AGENT_DEFAULTS, type AgentSettings, agentView, selectWindow, windowChoices } from "../views";
+import { type DataSourceItem, KeyAction } from "./key-action";
 
 /**
  * One agent's usage for one window. Pressing the key steps through the
@@ -21,6 +21,12 @@ export abstract class AgentKey extends KeyAction<AgentSettings> {
 		const state = this.store.state(this.provider);
 		const windowId = selectWindow(state.snapshot?.windows ?? [], settings.window)?.id ?? settings.window ?? "";
 		return agentView(this.provider, state, this.store.history(this.provider, windowId), settings);
+	}
+
+	/** The Window picker lists the windows this account actually has (models come and go). */
+	protected override async dataSource(event: string, settings: AgentSettings): Promise<DataSourceItem[] | undefined> {
+		if (event !== "getWindows") return undefined;
+		return windowChoices(this.provider, this.store.state(this.provider).snapshot?.windows, settings.window, "First available");
 	}
 
 	protected override async press(action: Action<AgentSettings>, settings: AgentSettings): Promise<void> {

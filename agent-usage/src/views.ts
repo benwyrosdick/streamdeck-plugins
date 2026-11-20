@@ -62,6 +62,29 @@ export const WINDOWS: Record<ProviderId, { id: string; name: string }[]> = {
 	grok: [{ id: "credits", name: "Credits (weekly)" }],
 };
 
+/** How a window reads in a picker: the known name, or "Weekly <model>" for a model-scoped limit. */
+export function windowName(id: ProviderId, window: Pick<UsageWindow, "id" | "label">): string {
+	return WINDOWS[id].find((w) => w.id === window.id)?.name ?? (window.id.startsWith("model:") ? `Weekly ${window.label}` : window.label);
+}
+
+/**
+ * The inspector's window choices: `first` (e.g. "First available"), then the
+ * windows the account has right now, or the known ones before the first
+ * reading. A chosen window that's gone stays listed, marked, so the setting
+ * isn't silently lost.
+ */
+export function windowChoices(id: ProviderId, windows: UsageWindow[] | undefined, current: string | undefined, first: string): { label: string; value: string }[] {
+	const known = windows?.length ? windows.map((w) => ({ value: w.id, label: windowName(id, w) })) : WINDOWS[id].map((w) => ({ value: w.id, label: w.name }));
+	const choices = [{ value: "", label: first }, ...known];
+	if (current && !choices.some((c) => c.value === current)) {
+		// A model window's id is all we have left: "model:claude-mythos" → "Weekly Claude Mythos".
+		const fromId = current.startsWith("model:") ? `Weekly ${current.slice(6).split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}` : current;
+		const name = WINDOWS[id].find((w) => w.id === current)?.name ?? fromId;
+		choices.push({ value: current, label: `${name} (not on plan)` });
+	}
+	return choices;
+}
+
 export const DEFAULT_WARN = 70;
 export const DEFAULT_CRIT = 90;
 export const DEFAULT_AGENTS: ProviderId[] = ["claude", "codex", "copilot", "grok"];

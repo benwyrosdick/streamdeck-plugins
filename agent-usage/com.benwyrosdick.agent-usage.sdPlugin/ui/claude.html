@@ -11,13 +11,7 @@
 		Plan usage from Anthropic's OAuth usage endpoint, using Claude Code's login (Keychain on macOS, ~/.claude/.credentials.json elsewhere). Thresholds apply to percent used. Press the key to step through the windows the plan has.
 		-->
 		<sdpi-item label="Window">
-			<sdpi-select setting="window" default="">
-				<option value="">First available</option>
-				<option value="session">5-hour session</option>
-				<option value="weekly">Weekly (all models)</option>
-				<option value="opus">Weekly Opus</option>
-				<option value="sonnet">Weekly Sonnet</option>
-			</sdpi-select>
+			<sdpi-select setting="window" datasource="getWindows" show-refresh default="" loading="Loading windows…"></sdpi-select>
 		</sdpi-item>
 
 		<sdpi-item label="Show">

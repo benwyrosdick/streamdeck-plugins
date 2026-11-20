@@ -12,10 +12,7 @@
 		The window is the included credits for the current period (weekly on SuperGrok). Thresholds apply to percent used.
 		-->
 		<sdpi-item label="Window">
-			<sdpi-select setting="window" default="">
-				<option value="">First available</option>
-				<option value="credits">Credits (weekly)</option>
-			</sdpi-select>
+			<sdpi-select setting="window" datasource="getWindows" show-refresh default="" loading="Loading windows…"></sdpi-select>
 		</sdpi-item>
 
 		<sdpi-item label="Show">

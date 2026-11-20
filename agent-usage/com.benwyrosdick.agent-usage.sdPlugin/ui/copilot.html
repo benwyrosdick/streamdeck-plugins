@@ -11,11 +11,7 @@
 		Monthly quotas from GitHub's Copilot user endpoint, using the GitHub CLI's login (gh auth login). Thresholds apply to percent used. Press the key to step through the quotas.
 		-->
 		<sdpi-item label="Window">
-			<sdpi-select setting="window" default="">
-				<option value="">First available</option>
-				<option value="premium">Premium requests (monthly)</option>
-				<option value="chat">Chat (monthly)</option>
-			</sdpi-select>
+			<sdpi-select setting="window" datasource="getWindows" show-refresh default="" loading="Loading windows…"></sdpi-select>
 		</sdpi-item>
 
 		<sdpi-item label="Show">

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { ProviderError } from "../src/providers/types";
 import type { ProviderState } from "../src/store";
-import { agentView, formatCountdown, levelFor, overviewAgents, overviewView, overviewWindow, selectWindow, tightestWindow, windowPace } from "../src/views";
+import { agentView, formatCountdown, levelFor, overviewAgents, overviewView, overviewWindow, selectWindow, tightestWindow, windowChoices, windowName, windowPace } from "../src/views";
 
 const NOW = Date.parse("2026-11-18T12:00:00Z");
 const MIN = 60_000;
@@ -122,6 +122,36 @@ describe("windowPace", () => {
 		expect(windowPace({ id: "s", label: "5h", usedPercent: 1, resetsAt: NOW - HOUR, windowMs: 5 * HOUR }, NOW)).toBe(1);
 		expect(windowPace({ id: "s", label: "5h", usedPercent: 1, resetsAt: NOW + 9 * HOUR, windowMs: 5 * HOUR }, NOW)).toBe(0);
 		expect(windowPace({ id: "s", label: "5h", usedPercent: 1, windowMs: 5 * HOUR }, NOW)).toBeUndefined();
+	});
+});
+
+describe("window choices", () => {
+	const fable = { id: "model:fable", label: "Fable", usedPercent: 0 };
+	it("lists the windows the account has, naming model limits", () => {
+		const windows = [...(claude.snapshot?.windows ?? []), fable];
+		expect(windowChoices("claude", windows, "", "First available")).toEqual([
+			{ value: "", label: "First available" },
+			{ value: "session", label: "5-hour session" },
+			{ value: "weekly", label: "Weekly (all models)" },
+			{ value: "model:fable", label: "Weekly Fable" },
+		]);
+	});
+
+	it("falls back to the known windows before the first reading", () => {
+		expect(windowChoices("codex", undefined, "", "Most used").map((c) => c.value)).toEqual(["", "session", "weekly"]);
+	});
+
+	it("keeps a chosen window that's gone, marked", () => {
+		expect(windowChoices("claude", claude.snapshot?.windows, "model:fable", "First available").at(-1)).toEqual({
+			value: "model:fable",
+			label: "Weekly Fable (not on plan)",
+		});
+		expect(windowName("claude", fable)).toBe("Weekly Fable");
+	});
+
+	it("titles a model limit by the model", () => {
+		const withFable: ProviderState = { snapshot: { windows: [...(claude.snapshot?.windows ?? []), { ...fable, resetsAt: NOW + 45 * MIN }] } };
+		expect(agentView("claude", withFable, [], { window: "model:fable", style: "classic" }, NOW)).toMatchObject({ title: "Claude Fable", value: "0%", detail: "resets 45m" });
 	});
 });
 

@@ -44,6 +44,14 @@ const EXPIRY_MARGIN_MS = 60_000;
 
 type UsageWindowJson = { utilization?: number | null; resets_at?: string | null } | null;
 
+/** An entry of the newer `limits` list, which also carries limits scoped to one model. */
+type LimitJson = {
+	kind?: string | null;
+	percent?: number | null;
+	resets_at?: string | null;
+	scope?: { model?: { display_name?: string | null } | null } | null;
+} | null;
+
 /** The fields of `GET /api/oauth/usage` the plugin reads. */
 export type ClaudeUsageJson = {
 	five_hour?: UsageWindowJson;
@@ -51,7 +59,11 @@ export type ClaudeUsageJson = {
 	seven_day_oauth_apps?: UsageWindowJson;
 	seven_day_opus?: UsageWindowJson;
 	seven_day_sonnet?: UsageWindowJson;
+	limits?: LimitJson[] | null;
 };
+
+/** The window id for a model-scoped weekly limit: `model:fable`. Stable as long as the model's name is. */
+export const modelWindowId = (name: string): string => `model:${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
 
 const HOUR_MS = 3_600_000;
 const WEEK_MS = 7 * 24 * HOUR_MS;
@@ -63,12 +75,21 @@ export function parseClaudeUsage(json: ClaudeUsageJson): UsageWindow[] {
 		typeof data?.utilization === "number"
 			? [{ id, label, usedPercent: clampPercent(data.utilization), resetsAt: toEpochMs(data.resets_at), windowMs }]
 			: [];
-	return [
+	const windows = [
 		...window("session", "5h", 5 * HOUR_MS, json.five_hour),
 		...window("weekly", "Week", WEEK_MS, json.seven_day ?? json.seven_day_oauth_apps),
 		...window("opus", "Opus", WEEK_MS, json.seven_day_opus),
 		...window("sonnet", "Sonnet", WEEK_MS, json.seven_day_sonnet),
 	];
+	// Weekly limits on one model (e.g. "Fable") only appear in `limits`. Models come and go,
+	// so each is named from the response rather than known in advance.
+	for (const limit of Array.isArray(json.limits) ? json.limits : []) {
+		const name = limit?.scope?.model?.display_name?.trim();
+		if (limit?.kind !== "weekly_scoped" || typeof limit.percent !== "number" || !name) continue;
+		if (windows.some((w) => w.label.toLowerCase() === name.toLowerCase())) continue;
+		windows.push({ id: modelWindowId(name), label: name, usedPercent: clampPercent(limit.percent), resetsAt: toEpochMs(limit.resets_at), windowMs: WEEK_MS });
+	}
+	return windows;
 }
 
 /**

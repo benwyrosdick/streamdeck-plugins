@@ -21,19 +21,11 @@
 		</sdpi-item>
 
 		<sdpi-item label="Claude window">
-			<sdpi-select setting="claudeWindow" default="">
-				<option value="">Most used</option>
-				<option value="session">5-hour session</option>
-				<option value="weekly">Weekly</option>
-			</sdpi-select>
+			<sdpi-select setting="claudeWindow" datasource="getClaudeWindows" show-refresh default="" loading="Loading windows…"></sdpi-select>
 		</sdpi-item>
 
 		<sdpi-item label="Codex window">
-			<sdpi-select setting="codexWindow" default="">
-				<option value="">Most used</option>
-				<option value="session">5-hour session</option>
-				<option value="weekly">Weekly</option>
-			</sdpi-select>
+			<sdpi-select setting="codexWindow" datasource="getCodexWindows" show-refresh default="" loading="Loading windows…"></sdpi-select>
 		</sdpi-item>
 
 		<sdpi-item label="Warning colors">

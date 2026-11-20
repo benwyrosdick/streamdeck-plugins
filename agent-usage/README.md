@@ -23,7 +23,7 @@ run or release and double-click it; the Stream Deck app installs it.
 
 | Action | Windows | Press |
 | --- | --- | --- |
-| **Claude Code** | 5-hour session, weekly (all models), weekly Opus, weekly Sonnet: whichever your plan has | Next window |
+| **Claude Code** | 5-hour session, weekly (all models), and any per-model weekly limits your plan has (Opus, Sonnet, Fable, …) | Next window |
 | **Codex** | 5-hour session, weekly | Next window |
 | **GitHub Copilot** | Premium requests (monthly), chat (monthly; usually unlimited) | Next quota |
 | **Grok** | Included credits for the current period (weekly on SuperGrok) | Refresh |
@@ -51,7 +51,7 @@ the clock. The Classic, Neon and Solid styles don't show it.
 
 | Setting | Notes |
 | --- | --- |
-| **Window** | Which limit to show; *First available* (default) is the 5-hour session for Claude and Codex, and premium requests for Copilot. |
+| **Window** | Which limit to show; *First available* (default) is the 5-hour session for Claude and Codex, and premium requests for Copilot. The list comes from your account's current limits, so per-model limits (e.g. *Weekly Fable*) appear as Anthropic adds them; a chosen limit that goes away is kept and marked *not on plan*. |
 | **Show** | Percent used (default) or percent left. |
 | **Style** | Classic, Neon, Ring (default), Bars or Solid — the same styles as the System Monitor plugin. |
 | **Content** | Usage and reset countdown (default), or usage only. |

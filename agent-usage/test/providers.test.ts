@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { describe, expect, it, vi } from "vitest";
 
-import { CLIENT_ID, type ClaudeCredentials, ClaudeProvider, type CredentialVault, parseClaudeUsage, TOKEN_URL, USAGE_URL } from "../src/providers/claude";
+import { CLIENT_ID, type ClaudeCredentials, ClaudeProvider, type CredentialVault, modelWindowId, parseClaudeUsage, TOKEN_URL, USAGE_URL } from "../src/providers/claude";
 import { CodexProvider, parseCodexUsage } from "../src/providers/codex";
 import { CopilotProvider, ghPaths, monthBefore, parseCopilotUsage } from "../src/providers/copilot";
 import { BILLING_URL, GrokProvider, parseGrokBilling, pickLogin, SETTINGS_URL } from "../src/providers/grok";
@@ -85,6 +85,30 @@ describe("Claude", () => {
 			{ id: "sonnet", label: "Sonnet", usedPercent: 3, resetsAt: undefined, windowMs: 7 * 24 * HOUR },
 		]);
 		expect(parseClaudeUsage({ seven_day_oauth_apps: { utilization: 7 } })).toMatchObject([{ id: "weekly", usedPercent: 7 }]);
+	});
+
+	it("adds model-scoped weekly limits from the limits list, named by the response", () => {
+		// The shape Anthropic returns: Fable only appears in `limits`.
+		const withFable = {
+			five_hour: { utilization: 45, resets_at: "2026-11-20T18:40:00Z" },
+			seven_day: { utilization: 12, resets_at: "2026-11-26T16:00:00Z" },
+			seven_day_opus: { utilization: 5, resets_at: "2026-11-26T16:00:00Z" },
+			limits: [
+				{ kind: "session", percent: 45, resets_at: "2026-11-20T18:40:00Z", scope: null },
+				{ kind: "weekly_scoped", percent: 7.5, resets_at: "2026-11-26T16:00:00Z", scope: { model: { id: null, display_name: "Fable" } } },
+				// Already reported as seven_day_opus: not listed twice.
+				{ kind: "weekly_scoped", percent: 5, resets_at: "2026-11-26T16:00:00Z", scope: { model: { display_name: "Opus" } } },
+				// Malformed entries are skipped without losing the rest.
+				null,
+				{ kind: "weekly_scoped", percent: "lots", scope: { model: { display_name: "Broken" } } },
+				{ kind: "weekly_scoped", percent: 3, scope: null },
+			],
+		};
+		const windows = parseClaudeUsage(withFable as never);
+		expect(windows.map((w) => w.id)).toEqual(["session", "weekly", "opus", modelWindowId("Fable")]);
+		expect(windows.at(-1)).toEqual({ id: "model:fable", label: "Fable", usedPercent: 7.5, resetsAt: Date.parse("2026-11-26T16:00:00Z"), windowMs: 7 * 24 * HOUR });
+		expect(modelWindowId("Claude Mythos 2")).toBe("model:claude-mythos-2");
+		expect(parseClaudeUsage({ limits: "nope" } as never)).toEqual([]);
 	});
 
 	it("reads usage with Claude Code's login", async () => {
