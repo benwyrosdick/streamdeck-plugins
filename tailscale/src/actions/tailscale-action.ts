@@ -205,12 +205,16 @@ export abstract class TailscaleAction<T extends JsonObject = JsonObject> extends
  * items, or a disabled hint when they can't be listed. `first` items (e.g. a
  * "last used" choice) go ahead of the accounts.
  */
-export async function profileItems(cli: Pick<TailscaleCli, "listProfiles">, first: DataSourceItem[] = []): Promise<DataSourceItem[]> {
+export async function profileItems(
+	cli: Pick<TailscaleCli, "listProfiles"> & Partial<Pick<TailscaleCli, "accessDenied">>,
+	first: DataSourceItem[] = [],
+): Promise<DataSourceItem[]> {
 	const profiles = await cli.listProfiles();
 	if (!profiles) {
 		// The hint can't share a value with a real choice, or the picker would select it.
 		const value = first.length ? "unavailable" : "";
-		return [...first, { value, label: streamDeck.i18n.translate("SwitchAccount.Unavailable"), disabled: true }];
+		const hint = cli.accessDenied ? "SwitchAccount.AccessDenied" : "SwitchAccount.Unavailable";
+		return [...first, { value, label: streamDeck.i18n.translate(hint), disabled: true }];
 	}
 	return [...first, ...profiles.map((p) => ({ value: p.id, label: profileLabel(p) }))];
 }

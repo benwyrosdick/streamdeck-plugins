@@ -13,7 +13,7 @@ vi.mock("@elgato/streamdeck", () => ({
 
 import streamDeck from "@elgato/streamdeck";
 
-import { profileLabel, type Tailscale } from "../src/actions/tailscale-action";
+import { profileItems, profileLabel, type Tailscale } from "../src/actions/tailscale-action";
 import { ToggleConnection, type ToggleConnectionSettings } from "../src/actions/toggle-connection";
 import type { Profile, TailscaleStatus } from "../src/tailscale/status";
 
@@ -207,6 +207,12 @@ describe("ToggleConnection settings", () => {
 		const action = hooks(fakeTailscale({ initial: on("alpha.com") }));
 		expect(await action.settingsForInspector({ profile: "b2", tailnet: "old.org" })).toEqual(betaKey);
 		expect(await action.settingsForInspector(betaKey)).toBeUndefined();
+	});
+
+	it("says how to fix an access-denied account list", async () => {
+		const items = await profileItems({ listProfiles: async () => undefined, accessDenied: true });
+		expect(items).toEqual([{ value: "", label: "SwitchAccount.AccessDenied", disabled: true }]);
+		expect(await profileItems({ listProfiles: async () => undefined })).toEqual([{ value: "", label: "SwitchAccount.Unavailable", disabled: true }]);
 	});
 
 	it("offers last used ahead of the accounts", async () => {

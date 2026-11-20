@@ -78,6 +78,16 @@ describe("listProfiles", () => {
 		expect(await c.listProfiles()).toEqual([{ id: "abc", tailnet: "a.com", account: "alice", current: true }]);
 	});
 
+	it("notes when the user isn't Tailscale's operator, without retrying the table", async () => {
+		const { cli: c, calls } = cli({ ok: false, stderr: "Access denied: profiles access denied" });
+		expect(await c.listProfiles()).toBeUndefined();
+		expect(c.accessDenied).toBe(true);
+		expect(calls).toHaveLength(1);
+		const ok = cli({ stdout: "[]" }).cli;
+		await ok.listProfiles();
+		expect(ok.accessDenied).toBe(false);
+	});
+
 	it("is undefined on failure or access denied", async () => {
 		expect(await cli({ ok: false }).cli.listProfiles()).toBeUndefined();
 		expect(await cli({ stderr: "Access denied: operator not set" }).cli.listProfiles()).toBeUndefined();

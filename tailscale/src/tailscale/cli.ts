@@ -61,6 +61,7 @@ export class TailscaleCli {
 	readonly #runner: Runner;
 	readonly #onError: TailscaleCliOptions["onError"];
 	#binary: string | undefined;
+	#accessDenied = false;
 
 	constructor(options: TailscaleCliOptions = {}) {
 		this.#platform = options.platform ?? process.platform;
@@ -111,16 +112,27 @@ export class TailscaleCli {
 	 */
 	async listProfiles(): Promise<Profile[] | undefined> {
 		const json = await this.run(["switch", "--list", "--json"]);
+		this.#accessDenied = isAccessDenied(json.stderr);
 		const fromJson = json.ok ? parseProfilesJson(json.stdout) : undefined;
-		if (fromJson) {
+		if (fromJson || this.#accessDenied) {
 			return fromJson;
 		}
 		// Older Tailscale: only the table.
 		const { ok, stdout, stderr } = await this.run(["switch", "--list"]);
-		if (!ok || stderr.toLowerCase().includes("access denied")) {
+		this.#accessDenied = isAccessDenied(stderr);
+		if (!ok || this.#accessDenied) {
 			return undefined;
 		}
 		return parseProfiles(stdout);
+	}
+
+	/**
+	 * Whether the last profile listing was refused because this user isn't
+	 * Tailscale's operator. The operator is set per profile, so a newly added
+	 * account needs `sudo tailscale set --operator=$USER` once.
+	 */
+	get accessDenied(): boolean {
+		return this.#accessDenied;
 	}
 
 	// ------------------------------------------------------------------ //
@@ -158,3 +170,5 @@ const execRunner: Runner = (file, args, timeout) =>
 			resolve({ ok: !error, stdout: stdout ?? "", stderr: stderr || error?.message || "" });
 		});
 	});
+
+const isAccessDenied = (stderr: string): boolean => stderr.toLowerCase().includes("access denied");

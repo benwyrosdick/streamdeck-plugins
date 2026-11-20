@@ -24,7 +24,8 @@
 	},
 	"Localization": {
 		"SwitchAccount": {
-			"Unavailable": "Can't list accounts — is Tailscale running?"
+			"Unavailable": "Can't list accounts — is Tailscale running?",
+			"AccessDenied": "Access denied — run: sudo tailscale set --operator=$USER"
 		},
 		"ToggleConnection": {
 			"LastUsed": "Last used account"
